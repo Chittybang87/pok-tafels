@@ -1,6 +1,9 @@
+import { useState, type FormEvent } from 'react'
 import { useGame } from '../context/GameContext'
 import { ALL_TABLES, GENERATIONS, SUM_MAX_OPTIONS } from '../lib/types'
 import './Settings.css'
+
+const SETTINGS_PASSWORD = 'admin'
 
 export function Settings() {
   const {
@@ -15,7 +18,68 @@ export function Settings() {
     resetGame,
   } = useGame()
 
+  const [unlocked, setUnlocked] = useState(false)
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState(false)
+
   const sums = settings.mathMode === 'sums'
+
+  function handleUnlock(e: FormEvent) {
+    e.preventDefault()
+    if (password === SETTINGS_PASSWORD) {
+      setUnlocked(true)
+      setError(false)
+      setPassword('')
+      return
+    }
+    setError(true)
+  }
+
+  if (!unlocked) {
+    return (
+      <div className="screen settings">
+        <header className="settings__head">
+          <button
+            type="button"
+            className="btn btn--ghost btn--sm"
+            onClick={() => setScreen('home')}
+          >
+            ← Terug
+          </button>
+          <h1>Instellingen</h1>
+          <p className="lede">Alleen voor ouders — voer het wachtwoord in.</p>
+        </header>
+
+        <form className="settings__lock" onSubmit={handleUnlock}>
+          <label className="settings__lock-label" htmlFor="settings-password">
+            Wachtwoord
+          </label>
+          <input
+            id="settings-password"
+            className={`settings__lock-input${error ? ' settings__lock-input--error' : ''}`}
+            type="password"
+            autoComplete="current-password"
+            autoFocus
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value)
+              if (error) setError(false)
+            }}
+            aria-invalid={error}
+            aria-describedby={error ? 'settings-password-error' : undefined}
+          />
+          {error ? (
+            <p id="settings-password-error" className="settings__lock-error" role="alert">
+              Dat wachtwoord klopt niet.
+            </p>
+          ) : null}
+          <button type="submit" className="btn btn--primary">
+            Openen
+          </button>
+        </form>
+      </div>
+    )
+  }
 
   return (
     <div className="screen settings">
