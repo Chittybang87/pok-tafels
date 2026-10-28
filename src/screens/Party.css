@@ -17,15 +17,33 @@
   gap: 0.65rem;
 }
 
+.party__row {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.45rem;
+  border-radius: 18px;
+  border: 3px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  background: var(--panel);
+}
+
+.party__row--active {
+  border-color: var(--accent);
+}
+
+.party__row--ready {
+  border-color: #f0b429;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #f0b429 35%, transparent);
+}
+
 .party__item {
   width: 100%;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 16px;
-  border: 3px solid color-mix(in srgb, var(--ink) 10%, transparent);
-  background: var(--panel);
+  padding: 0.35rem 0.4rem;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
   font-family: inherit;
   color: inherit;
   text-align: left;
@@ -37,14 +55,70 @@
   cursor: not-allowed;
 }
 
-.party__item--active {
-  border-color: var(--accent);
-}
-
 .party__info {
   flex: 1;
   display: grid;
   gap: 0.25rem;
+}
+
+.party__evo-progress {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  opacity: 0.75;
+}
+
+.party__evolve-btn {
+  min-height: 44px;
+  font-size: 1rem;
+}
+
+.party__pick {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+}
+
+.party__pick-card {
+  width: min(100%, 420px);
+  padding: 1.1rem;
+  border-radius: 20px;
+  background: var(--panel);
+  display: grid;
+  gap: 0.75rem;
+}
+
+.party__pick-card h2 {
+  margin: 0;
+  font-family: 'Fredoka', 'Nunito', sans-serif;
+}
+
+.party__pick-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+  max-height: 50dvh;
+  overflow: auto;
+}
+
+.party__pick-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 14px;
+  border: 2px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  background: color-mix(in srgb, var(--panel) 80%, #fff);
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
 }
 
 .party__empty {

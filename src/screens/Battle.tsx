@@ -141,7 +141,7 @@ export function Battle() {
     setTurns((t) => t + 1)
 
     if (num === question.answer) {
-      recordAnswer(question, true)
+      recordAnswer(question, true, partner.instanceId)
       setPartnerAnim('attack')
       setWildAnim('hit')
       const dmg = offense.damage

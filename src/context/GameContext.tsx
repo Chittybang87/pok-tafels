@@ -51,7 +51,13 @@ interface GameContextValue {
   catchPokemon: (pokemonId: number) => boolean
   markSeen: (pokemonId: number) => void
   /** Registreert een antwoord voor progress + statistieken */
-  recordAnswer: (question: MathQuestion, correct: boolean) => void
+  recordAnswer: (
+    question: MathQuestion,
+    correct: boolean,
+    partyInstanceId?: string,
+  ) => void
+  /** Evolueer een partij-Pokémon naar intoId */
+  evolveMember: (instanceId: string, intoId: number) => void
   clearPracticeStats: () => void
   resetGame: () => void
 }
@@ -239,12 +245,42 @@ export function GameProvider({ children }: { children: ReactNode }) {
   )
 
   const recordAnswer = useCallback(
-    (question: MathQuestion, correct: boolean) => {
+    (question: MathQuestion, correct: boolean, partyInstanceId?: string) => {
       persistProgress((prev) => ({
         ...prev,
         correctAnswers: correct ? prev.correctAnswers + 1 : prev.correctAnswers,
         practiceStats: applyAnswer(prev.practiceStats, question, correct),
+        party:
+          correct && partyInstanceId
+            ? prev.party.map((p) =>
+                p.instanceId === partyInstanceId
+                  ? { ...p, correctCount: p.correctCount + 1 }
+                  : p,
+              )
+            : prev.party,
       }))
+    },
+    [persistProgress],
+  )
+
+  const evolveMember = useCallback(
+    (instanceId: string, intoId: number) => {
+      persistProgress((prev) => {
+        const member = prev.party.find((p) => p.instanceId === instanceId)
+        if (!member) return prev
+        const party = prev.party.map((p) =>
+          p.instanceId === instanceId
+            ? { ...p, pokemonId: intoId, correctCount: 0 }
+            : p,
+        )
+        const caughtIds = prev.caughtIds.includes(intoId)
+          ? prev.caughtIds
+          : [...prev.caughtIds, intoId]
+        const seenIds = prev.seenIds.includes(intoId)
+          ? prev.seenIds
+          : [...prev.seenIds, intoId]
+        return { ...prev, party, caughtIds, seenIds }
+      })
     },
     [persistProgress],
   )
@@ -284,6 +320,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       catchPokemon,
       markSeen,
       recordAnswer,
+      evolveMember,
       clearPracticeStats,
       resetGame,
     }),
@@ -306,6 +343,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       catchPokemon,
       markSeen,
       recordAnswer,
+      evolveMember,
       clearPracticeStats,
       resetGame,
     ],

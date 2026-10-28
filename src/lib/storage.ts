@@ -101,6 +101,9 @@ export function loadProgress(): Progress {
       merged.correctAnswers = 0
     }
     merged.practiceStats = normalizePracticeStats(parsed.practiceStats)
+    merged.party = (parsed.party ?? [])
+      .map((m) => normalizePartyMember(m))
+      .filter((m): m is PartyMember => m !== null)
     if (merged.party.length > MAX_PARTY_SIZE) {
       merged.party = merged.party.slice(0, MAX_PARTY_SIZE)
     }
@@ -131,6 +134,30 @@ export function createPartyMember(pokemonId: number): PartyMember {
     pokemonId,
     hp: MAX_HP,
     maxHp: MAX_HP,
+    correctCount: 0,
+  }
+}
+
+function normalizePartyMember(raw: Partial<PartyMember>): PartyMember | null {
+  if (
+    typeof raw.instanceId !== 'string' ||
+    typeof raw.pokemonId !== 'number' ||
+    typeof raw.hp !== 'number' ||
+    typeof raw.maxHp !== 'number'
+  ) {
+    return null
+  }
+  return {
+    instanceId: raw.instanceId,
+    pokemonId: raw.pokemonId,
+    hp: raw.hp,
+    maxHp: raw.maxHp,
+    correctCount:
+      typeof raw.correctCount === 'number' &&
+      Number.isFinite(raw.correctCount) &&
+      raw.correctCount >= 0
+        ? Math.floor(raw.correctCount)
+        : 0,
   }
 }
 

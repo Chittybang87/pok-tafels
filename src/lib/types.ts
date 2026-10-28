@@ -55,6 +55,8 @@ export interface PartyMember {
   pokemonId: number
   hp: number
   maxHp: number
+  /** Goede antwoorden met deze partij-Pokémon (voor evolutie) */
+  correctCount: number
 }
 
 export type MathMode = 'tables' | 'sums'

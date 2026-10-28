@@ -1,4 +1,5 @@
-import { generationOf, pokemonForGenerations } from './pokemon'
+import { encounterStage } from './evolution'
+import { pokemonForGenerations } from './pokemon'
 import {
   bestAttackMultiplier,
   damageFromMultiplier,
@@ -7,7 +8,7 @@ import {
   type MatchupKind,
 } from './typeChart'
 import type { Generation } from './types'
-import { GENERATIONS, MAX_HP } from './types'
+import { MAX_HP } from './types'
 
 export interface TypeMatchup {
   multiplier: number
@@ -44,13 +45,16 @@ const TIER_LABELS = [
   'Elite',
 ] as const
 
-/** Gewichten [early, mid, late] per encounter-tier */
-const TIER_WEIGHTS: Record<EncounterTier, readonly [number, number, number]> = {
-  0: [3, 2, 1],
-  1: [3, 2, 2],
-  2: [2, 3, 2],
-  3: [1, 2, 3],
-  4: [1, 2, 4],
+/** Gewichten [stadium1, stadium2, stadium3] per encounter-tier */
+const TIER_STAGE_WEIGHTS: Record<
+  EncounterTier,
+  readonly [number, number, number]
+> = {
+  0: [5, 1, 0],
+  1: [4, 2, 1],
+  2: [2, 4, 2],
+  3: [1, 3, 4],
+  4: [1, 2, 5],
 }
 
 export function encounterTier(correctAnswers: number): EncounterTier {
@@ -69,25 +73,10 @@ export function encounterTierLabel(tier: EncounterTier): string {
   return TIER_LABELS[tier]
 }
 
-function dexPos(pokemonId: number): number {
-  const gen = generationOf(pokemonId)
-  const range = GENERATIONS.find((g) => g.id === gen)!
-  const span = range.end - range.start
-  return span <= 0 ? 0 : (pokemonId - range.start) / span
-}
-
-function bandOf(pos: number): 0 | 1 | 2 {
-  if (pos <= 0.33) return 0
-  if (pos <= 0.66) return 1
-  return 2
-}
-
-/** Wild HP: gewone Pokémon 3, mid 4, late/legendaries in de gen 5; +1 bij hoge tier */
+/** Wild HP op basis van evolutiestadium; +1 bij hoge tier (max 5) */
 export function wildMaxHp(pokemonId: number, tier: EncounterTier = 0): number {
-  const pos = dexPos(pokemonId)
-  let hp = 3
-  if (pos >= 0.92) hp = 5
-  else if (pos >= 0.78 || pokemonId % 3 === 0) hp = 4
+  const stage = encounterStage(pokemonId)
+  let hp = stage === 1 ? 3 : stage === 2 ? 4 : 5
   if (tier >= 3) hp = Math.min(5, hp + 1)
   return hp
 }
@@ -120,13 +109,15 @@ export function pickWildId(
   const pool = uncaught.length > 0 ? uncaught : all
 
   const tier = encounterTier(correctAnswers)
-  const [wEarly, wMid, wLate] = TIER_WEIGHTS[tier]
+  const weights = TIER_STAGE_WEIGHTS[tier]
 
   const weighted = pool.flatMap((id) => {
-    const band = bandOf(dexPos(id))
-    const weight = band === 0 ? wEarly : band === 1 ? wMid : wLate
+    const stage = encounterStage(id)
+    const weight = weights[stage - 1] ?? 1
+    if (weight <= 0) return []
     return Array.from({ length: weight }, () => id)
   })
 
-  return weighted[Math.floor(Math.random() * weighted.length)]!
+  const pickFrom = weighted.length > 0 ? weighted : pool
+  return pickFrom[Math.floor(Math.random() * pickFrom.length)]!
 }

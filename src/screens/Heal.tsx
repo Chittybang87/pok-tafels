@@ -35,7 +35,7 @@ export function Heal() {
     setBusy(true)
 
     if (num === question.answer) {
-      recordAnswer(question, true)
+      recordAnswer(question, true, current.instanceId)
       healMember(current.instanceId, 1)
       setHealFlash(true)
       setFeedback('Goed! +1 HP')
