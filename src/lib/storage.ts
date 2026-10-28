@@ -1,3 +1,4 @@
+import { defaultPracticeStats, normalizePracticeStats } from './stats'
 import type {
   Generation,
   MathMode,
@@ -40,6 +41,7 @@ export const defaultProgress = (): Progress => ({
   seenIds: [],
   battlesWon: 0,
   correctAnswers: 0,
+  practiceStats: defaultPracticeStats(),
 })
 
 export function loadSettings(): Settings {
@@ -98,6 +100,7 @@ export function loadProgress(): Progress {
     ) {
       merged.correctAnswers = 0
     }
+    merged.practiceStats = normalizePracticeStats(parsed.practiceStats)
     if (merged.party.length > MAX_PARTY_SIZE) {
       merged.party = merged.party.slice(0, MAX_PARTY_SIZE)
     }

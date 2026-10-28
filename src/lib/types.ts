@@ -2,10 +2,36 @@ export type Screen =
   | 'starter'
   | 'home'
   | 'settings'
+  | 'stats'
   | 'battle'
   | 'heal'
   | 'party'
   | 'pokedex'
+
+/** Per som (bijv. "7 × 8") */
+export interface FactStat {
+  display: string
+  correct: number
+  wrong: number
+  /** ISO-tijdstempel van laatste poging */
+  lastAt: string
+}
+
+/** Activiteit per kalenderdag */
+export interface DayStat {
+  /** YYYY-MM-DD (lokaal) */
+  date: string
+  correct: number
+  wrong: number
+}
+
+export interface PracticeStats {
+  facts: Record<string, FactStat>
+  /** Nieuwste dagen eerst */
+  days: DayStat[]
+  totalCorrect: number
+  totalWrong: number
+}
 
 export interface PokemonSpecies {
   id: number
@@ -60,6 +86,8 @@ export interface Progress {
   battlesWon: number
   /** Goed beantwoorde sommen (gevecht + herstellen) */
   correctAnswers: number
+  /** Oefenhistorie en fouten per som */
+  practiceStats: PracticeStats
 }
 
 export interface MathQuestion {

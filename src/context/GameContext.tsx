@@ -8,10 +8,20 @@ import {
   type ReactNode,
 } from 'react'
 import { warmSpriteCache } from '../lib/pokemon'
-import { createPartyMember, loadProgress, loadSettings, resetAll, saveProgress, saveSettings } from '../lib/storage'
+import { applyAnswer, defaultPracticeStats } from '../lib/stats'
+import {
+  createPartyMember,
+  defaultProgress,
+  loadProgress,
+  loadSettings,
+  resetAll,
+  saveProgress,
+  saveSettings,
+} from '../lib/storage'
 import type {
   Generation,
   MathMode,
+  MathQuestion,
   PartyMember,
   Progress,
   Screen,
@@ -40,7 +50,9 @@ interface GameContextValue {
   /** @returns of de Pokémon in het team (max 6) is gezet */
   catchPokemon: (pokemonId: number) => boolean
   markSeen: (pokemonId: number) => void
-  recordCorrectAnswer: () => void
+  /** Registreert een antwoord voor progress + statistieken */
+  recordAnswer: (question: MathQuestion, correct: boolean) => void
+  clearPracticeStats: () => void
   resetGame: () => void
 }
 
@@ -226,17 +238,28 @@ export function GameProvider({ children }: { children: ReactNode }) {
     [progress, persistProgress],
   )
 
-  const recordCorrectAnswer = useCallback(() => {
+  const recordAnswer = useCallback(
+    (question: MathQuestion, correct: boolean) => {
+      persistProgress((prev) => ({
+        ...prev,
+        correctAnswers: correct ? prev.correctAnswers + 1 : prev.correctAnswers,
+        practiceStats: applyAnswer(prev.practiceStats, question, correct),
+      }))
+    },
+    [persistProgress],
+  )
+
+  const clearPracticeStats = useCallback(() => {
     persistProgress((prev) => ({
       ...prev,
-      correctAnswers: prev.correctAnswers + 1,
+      practiceStats: defaultPracticeStats(),
     }))
   }, [persistProgress])
 
   const resetGame = useCallback(() => {
     resetAll()
     setSettings(loadSettings())
-    setProgress(defaultFresh())
+    setProgress(defaultProgress())
     setScreen('starter')
   }, [])
 
@@ -260,7 +283,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
       healMember,
       catchPokemon,
       markSeen,
-      recordCorrectAnswer,
+      recordAnswer,
+      clearPracticeStats,
       resetGame,
     }),
     [
@@ -281,24 +305,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
       healMember,
       catchPokemon,
       markSeen,
-      recordCorrectAnswer,
+      recordAnswer,
+      clearPracticeStats,
       resetGame,
     ],
   )
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>
-}
-
-function defaultFresh(): Progress {
-  return {
-    starterChosen: false,
-    activePartnerInstanceId: null,
-    party: [],
-    caughtIds: [],
-    seenIds: [],
-    battlesWon: 0,
-    correctAnswers: 0,
-  }
 }
 
 export function useGame(): GameContextValue {

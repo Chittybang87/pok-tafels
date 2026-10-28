@@ -9,8 +9,7 @@ import type { MathQuestion, PartyMember } from '../lib/types'
 import './Heal.css'
 
 export function Heal() {
-  const { setScreen, progress, settings, healMember, recordCorrectAnswer } =
-    useGame()
+  const { setScreen, progress, settings, healMember, recordAnswer } = useGame()
   const injured = progress.party.filter((p) => p.hp < p.maxHp)
   const [target, setTarget] = useState<PartyMember | null>(null)
   const [question, setQuestion] = useState<MathQuestion>(() =>
@@ -36,7 +35,7 @@ export function Heal() {
     setBusy(true)
 
     if (num === question.answer) {
-      recordCorrectAnswer()
+      recordAnswer(question, true)
       healMember(current.instanceId, 1)
       setHealFlash(true)
       setFeedback('Goed! +1 HP')
@@ -47,6 +46,7 @@ export function Heal() {
         refreshQuestion()
       }, 700)
     } else {
+      recordAnswer(question, false)
       setFeedback(`Bijna… het was ${question.answer}`)
       window.setTimeout(() => {
         setFeedback(null)

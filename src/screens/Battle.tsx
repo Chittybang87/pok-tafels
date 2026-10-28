@@ -31,7 +31,7 @@ export function Battle() {
     updatePartyMember,
     catchPokemon,
     markSeen,
-    recordCorrectAnswer,
+    recordAnswer,
   } = useGame()
 
   const wildId = useMemo(
@@ -141,7 +141,7 @@ export function Battle() {
     setTurns((t) => t + 1)
 
     if (num === question.answer) {
-      recordCorrectAnswer()
+      recordAnswer(question, true)
       setPartnerAnim('attack')
       setWildAnim('hit')
       const dmg = offense.damage
@@ -169,6 +169,7 @@ export function Battle() {
         }
       }, 750)
     } else {
+      recordAnswer(question, false)
       setWildAnim('attack')
       setPartnerAnim('hit')
       const dmg = Math.max(1, defense.damage)

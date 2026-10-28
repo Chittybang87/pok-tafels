@@ -6,6 +6,7 @@ import { Party } from './screens/Party'
 import { Pokedex } from './screens/Pokedex'
 import { Settings } from './screens/Settings'
 import { Starter } from './screens/Starter'
+import { Stats } from './screens/Stats'
 
 function Router() {
   const { screen, battleKey } = useGame()
@@ -15,6 +16,8 @@ function Router() {
       return <Starter />
     case 'settings':
       return <Settings />
+    case 'stats':
+      return <Stats />
     case 'party':
       return <Party />
     case 'pokedex':

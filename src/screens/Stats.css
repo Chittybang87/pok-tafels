@@ -1,0 +1,116 @@
+.stats {
+  min-height: 100dvh;
+  padding: 1.25rem;
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.stats__head h1 {
+  margin: 0.5rem 0 0.35rem;
+}
+
+.stats__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.stats__section-title {
+  margin: 0;
+  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+
+.stats__overview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.55rem;
+}
+
+.stats__metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.75rem 0.4rem;
+  border-radius: 14px;
+  background: var(--panel);
+  border: 3px solid color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.stats__metric--wrong {
+  border-color: color-mix(in srgb, var(--hp-low) 35%, transparent);
+  background: color-mix(in srgb, var(--hp-low) 8%, var(--panel));
+}
+
+.stats__metric-value {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.stats__metric-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+.stats__today {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.stats__hint,
+.stats__empty {
+  margin: 0;
+  font-size: 0.95rem;
+  opacity: 0.85;
+  font-weight: 600;
+}
+
+.stats__facts,
+.stats__days {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.stats__fact,
+.stats__day {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 14px;
+  background: var(--panel);
+  border: 3px solid color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.stats__day--today {
+  border-color: color-mix(in srgb, var(--accent-2) 45%, transparent);
+  background: color-mix(in srgb, var(--accent-2) 10%, var(--panel));
+}
+
+.stats__fact-sum,
+.stats__day-date {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.stats__fact-meta,
+.stats__day-meta {
+  font-size: 0.88rem;
+  opacity: 0.75;
+  font-weight: 650;
+}

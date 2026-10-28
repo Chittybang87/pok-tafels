@@ -71,6 +71,9 @@ export function Home() {
         >
           Pokédex
         </button>
+        <button type="button" className="btn" onClick={() => setScreen('stats')}>
+          Statistieken
+        </button>
         <button
           type="button"
           className="btn btn--ghost"
