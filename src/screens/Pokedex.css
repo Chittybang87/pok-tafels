@@ -1,0 +1,70 @@
+.pokedex {
+  min-height: 100dvh;
+  padding: 1.25rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pokedex__head h1 {
+  margin: 0.5rem 0 0.25rem;
+}
+
+.pokedex__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.pokedex__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.4rem;
+  background: var(--panel);
+  border-radius: 12px;
+  border: 2px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  min-height: 110px;
+}
+
+.pokedex__cell .type-badges {
+  justify-content: center;
+  max-width: 100%;
+}
+
+.pokedex__cell .type-badge {
+  font-size: 0.58rem;
+  padding: 0.08rem 0.3rem;
+}
+
+.pokedex__cell--caught {
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.pokedex__num {
+  font-size: 0.65rem;
+  opacity: 0.55;
+  font-variant-numeric: tabular-nums;
+}
+
+.pokedex__name {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pokedex__empty {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  opacity: 0.35;
+}

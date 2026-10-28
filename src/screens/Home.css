@@ -1,0 +1,47 @@
+.home {
+  min-height: 100dvh;
+  padding: 1.5rem 1.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.home__hero {
+  text-align: center;
+}
+
+.home__hero h1 {
+  margin: 0.25rem 0 0.35rem;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+.home__partner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--panel);
+  border-radius: 18px;
+  border: 3px solid color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.home__partner-info {
+  flex: 1;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.home__warn {
+  margin: 0;
+  color: var(--hp-low);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.home__nav {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: auto;
+}

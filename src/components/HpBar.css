@@ -1,0 +1,57 @@
+.hpbar {
+  display: grid;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.hpbar__label {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.hpbar__track {
+  height: 14px;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 2px solid color-mix(in srgb, var(--ink) 20%, transparent);
+}
+
+.hpbar__fill {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.35s ease;
+}
+
+.hpbar__fill--ok {
+  background: var(--hp-ok);
+}
+
+.hpbar__fill--mid {
+  background: var(--hp-mid);
+}
+
+.hpbar__fill--low {
+  background: var(--hp-low);
+}
+
+.hpbar__nums {
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+
+.hpbar--heal .hpbar__fill {
+  animation: heal-pulse 0.5s ease;
+}
+
+@keyframes heal-pulse {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.4);
+    box-shadow: 0 0 12px var(--heal);
+  }
+}

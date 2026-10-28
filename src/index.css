@@ -1,0 +1,126 @@
+:root {
+  --ink: #1e2a1f;
+  --panel: #fffdf6;
+  --accent: #e53935;
+  --accent-2: #2f6fed;
+  --sky: #7ec8f5;
+  --grass: #7cbc4a;
+  --grass-deep: #4f8f2f;
+  --heal: #3ddc84;
+  --hp-ok: #3ddc84;
+  --hp-mid: #f5c542;
+  --hp-low: #e53935;
+  --bg1: #b7e4ff;
+  --bg2: #d8f5a2;
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ink);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  background:
+    radial-gradient(ellipse 120% 80% at 10% -10%, var(--bg1), transparent 55%),
+    radial-gradient(ellipse 100% 70% at 100% 0%, #ffe08a, transparent 45%),
+    linear-gradient(165deg, #e8f7ff 0%, var(--bg2) 55%, #f4fff0 100%);
+  background-attachment: fixed;
+}
+
+.app-shell {
+  min-height: 100dvh;
+}
+
+.brand {
+  margin: 0;
+  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-size: clamp(1.8rem, 6vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  text-shadow: 0 2px 0 color-mix(in srgb, var(--accent) 25%, #fff);
+}
+
+.lede {
+  margin: 0;
+  opacity: 0.8;
+  font-weight: 600;
+}
+
+h1 {
+  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-weight: 650;
+}
+
+.btn {
+  min-height: 52px;
+  padding: 0.75rem 1.1rem;
+  border: none;
+  border-radius: 16px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 800;
+  background: var(--panel);
+  color: var(--ink);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--ink) 16%, transparent);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--accent) 65%, #000);
+}
+
+.btn--ghost {
+  background: transparent;
+  box-shadow: none;
+  border: 2px solid color-mix(in srgb, var(--ink) 18%, transparent);
+}
+
+.btn--sm {
+  min-height: 40px;
+  font-size: 0.95rem;
+  padding: 0.4rem 0.85rem;
+  width: fit-content;
+}
+
+.btn--danger {
+  background: color-mix(in srgb, var(--hp-low) 15%, var(--panel));
+  color: var(--hp-low);
+  border: 2px solid color-mix(in srgb, var(--hp-low) 40%, transparent);
+  box-shadow: none;
+  margin-top: auto;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 2px;
+}

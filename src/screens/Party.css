@@ -1,0 +1,60 @@
+.party {
+  min-height: 100dvh;
+  padding: 1.25rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.party__head h1 {
+  margin: 0.5rem 0 0.35rem;
+}
+
+.party__list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.party__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 16px;
+  border: 3px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  background: var(--panel);
+  font-family: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.party__item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.party__item--active {
+  border-color: var(--accent);
+}
+
+.party__info {
+  flex: 1;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.party__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 4.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 16px;
+  border: 3px dashed color-mix(in srgb, var(--ink) 18%, transparent);
+  color: color-mix(in srgb, var(--ink) 45%, transparent);
+  font-size: 0.95rem;
+}

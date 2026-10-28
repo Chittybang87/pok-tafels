@@ -1,0 +1,26 @@
+.type-badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.type-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 0 rgb(0 0 0 / 25%);
+  line-height: 1.2;
+}
+
+.type-badges--sm .type-badge {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+}
+
+.type-badges--md .type-badge {
+  font-size: 0.8rem;
+}

@@ -1,0 +1,66 @@
+.poke-sprite {
+  image-rendering: pixelated;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+.poke-sprite--sil {
+  filter: brightness(0) opacity(0.55);
+}
+
+.poke-sprite--idle {
+  animation: poke-bob 1.6s ease-in-out infinite;
+}
+
+.poke-sprite--attack {
+  animation: poke-attack 0.45s ease-out;
+}
+
+.poke-sprite--hit {
+  animation: poke-hit 0.4s ease-in-out;
+}
+
+.poke-sprite--none {
+  animation: none;
+}
+
+@keyframes poke-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes poke-attack {
+  0% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(18px) scale(1.05);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes poke-hit {
+  0%,
+  100% {
+    transform: translateX(0);
+    filter: none;
+  }
+  25% {
+    transform: translateX(-8px);
+    filter: brightness(1.4) sepia(1) hue-rotate(-40deg) saturate(4);
+  }
+  50% {
+    transform: translateX(8px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+}

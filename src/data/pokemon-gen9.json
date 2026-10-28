@@ -1,0 +1,1039 @@
+[
+  {
+    "id": 906,
+    "name": "Sprigatito",
+    "types": [
+      "grass"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 907,
+    "name": "Floragato",
+    "types": [
+      "grass"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 908,
+    "name": "Meowscarada",
+    "types": [
+      "grass",
+      "dark"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 909,
+    "name": "Fuecoco",
+    "types": [
+      "fire"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 910,
+    "name": "Crocalor",
+    "types": [
+      "fire"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 911,
+    "name": "Skeledirge",
+    "types": [
+      "fire",
+      "ghost"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 912,
+    "name": "Quaxly",
+    "types": [
+      "water"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 913,
+    "name": "Quaxwell",
+    "types": [
+      "water"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 914,
+    "name": "Quaquaval",
+    "types": [
+      "water",
+      "fighting"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 915,
+    "name": "Lechonk",
+    "types": [
+      "normal"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 916,
+    "name": "Oinkologne",
+    "types": [
+      "normal"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 917,
+    "name": "Tarountula",
+    "types": [
+      "bug"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 918,
+    "name": "Spidops",
+    "types": [
+      "bug"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 919,
+    "name": "Nymble",
+    "types": [
+      "bug"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 920,
+    "name": "Lokix",
+    "types": [
+      "bug",
+      "dark"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 921,
+    "name": "Pawmi",
+    "types": [
+      "electric"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 922,
+    "name": "Pawmo",
+    "types": [
+      "electric",
+      "fighting"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 923,
+    "name": "Pawmot",
+    "types": [
+      "electric",
+      "fighting"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 924,
+    "name": "Tandemaus",
+    "types": [
+      "normal"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 925,
+    "name": "Maushold",
+    "types": [
+      "normal"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 926,
+    "name": "Fidough",
+    "types": [
+      "fairy"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 927,
+    "name": "Dachsbun",
+    "types": [
+      "fairy"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 928,
+    "name": "Smoliv",
+    "types": [
+      "grass",
+      "normal"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 929,
+    "name": "Dolliv",
+    "types": [
+      "grass",
+      "normal"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 930,
+    "name": "Arboliva",
+    "types": [
+      "grass",
+      "normal"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 931,
+    "name": "Squawkabilly",
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 932,
+    "name": "Nacli",
+    "types": [
+      "rock"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 933,
+    "name": "Naclstack",
+    "types": [
+      "rock"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 934,
+    "name": "Garganacl",
+    "types": [
+      "rock"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 935,
+    "name": "Charcadet",
+    "types": [
+      "fire"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 936,
+    "name": "Armarouge",
+    "types": [
+      "fire",
+      "psychic"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 937,
+    "name": "Ceruledge",
+    "types": [
+      "fire",
+      "ghost"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 938,
+    "name": "Tadbulb",
+    "types": [
+      "electric"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 939,
+    "name": "Bellibolt",
+    "types": [
+      "electric"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 940,
+    "name": "Wattrel",
+    "types": [
+      "electric",
+      "flying"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 941,
+    "name": "Kilowattrel",
+    "types": [
+      "electric",
+      "flying"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 942,
+    "name": "Maschiff",
+    "types": [
+      "dark"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 943,
+    "name": "Mabosstiff",
+    "types": [
+      "dark"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 944,
+    "name": "Shroodle",
+    "types": [
+      "poison",
+      "normal"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 945,
+    "name": "Grafaiai",
+    "types": [
+      "poison",
+      "normal"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 946,
+    "name": "Bramblin",
+    "types": [
+      "grass",
+      "ghost"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 947,
+    "name": "Brambleghast",
+    "types": [
+      "grass",
+      "ghost"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 948,
+    "name": "Toedscool",
+    "types": [
+      "ground",
+      "grass"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 949,
+    "name": "Toedscruel",
+    "types": [
+      "ground",
+      "grass"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 950,
+    "name": "Klawf",
+    "types": [
+      "rock"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 951,
+    "name": "Capsakid",
+    "types": [
+      "grass"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 952,
+    "name": "Scovillain",
+    "types": [
+      "grass",
+      "fire"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 953,
+    "name": "Rellor",
+    "types": [
+      "bug"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 954,
+    "name": "Rabsca",
+    "types": [
+      "bug",
+      "psychic"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 955,
+    "name": "Flittle",
+    "types": [
+      "psychic"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 956,
+    "name": "Espathra",
+    "types": [
+      "psychic"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 957,
+    "name": "Tinkatink",
+    "types": [
+      "fairy",
+      "steel"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 958,
+    "name": "Tinkatuff",
+    "types": [
+      "fairy",
+      "steel"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 959,
+    "name": "Tinkaton",
+    "types": [
+      "fairy",
+      "steel"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 960,
+    "name": "Wiglett",
+    "types": [
+      "water"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 961,
+    "name": "Wugtrio",
+    "types": [
+      "water"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 962,
+    "name": "Bombirdier",
+    "types": [
+      "flying",
+      "dark"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 963,
+    "name": "Finizen",
+    "types": [
+      "water"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 964,
+    "name": "Palafin",
+    "types": [
+      "water"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 965,
+    "name": "Varoom",
+    "types": [
+      "steel",
+      "poison"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 966,
+    "name": "Revavroom",
+    "types": [
+      "steel",
+      "poison"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 967,
+    "name": "Cyclizar",
+    "types": [
+      "dragon",
+      "normal"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 968,
+    "name": "Orthworm",
+    "types": [
+      "steel"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 969,
+    "name": "Glimmet",
+    "types": [
+      "rock",
+      "poison"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 970,
+    "name": "Glimmora",
+    "types": [
+      "rock",
+      "poison"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 971,
+    "name": "Greavard",
+    "types": [
+      "ghost"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 972,
+    "name": "Houndstone",
+    "types": [
+      "ghost"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 973,
+    "name": "Flamigo",
+    "types": [
+      "flying",
+      "fighting"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 974,
+    "name": "Cetoddle",
+    "types": [
+      "ice"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 975,
+    "name": "Cetitan",
+    "types": [
+      "ice"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 976,
+    "name": "Veluza",
+    "types": [
+      "water",
+      "psychic"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 977,
+    "name": "Dondozo",
+    "types": [
+      "water"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 978,
+    "name": "Tatsugiri",
+    "types": [
+      "dragon",
+      "water"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 979,
+    "name": "Annihilape",
+    "types": [
+      "fighting",
+      "ghost"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 980,
+    "name": "Clodsire",
+    "types": [
+      "poison",
+      "ground"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 981,
+    "name": "Farigiraf",
+    "types": [
+      "normal",
+      "psychic"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 982,
+    "name": "Dudunsparce",
+    "types": [
+      "normal"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 983,
+    "name": "Kingambit",
+    "types": [
+      "dark",
+      "steel"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 984,
+    "name": "Great Tusk",
+    "types": [
+      "ground",
+      "fighting"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 985,
+    "name": "Scream Tail",
+    "types": [
+      "fairy",
+      "psychic"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 986,
+    "name": "Brute Bonnet",
+    "types": [
+      "grass",
+      "dark"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 987,
+    "name": "Flutter Mane",
+    "types": [
+      "ghost",
+      "fairy"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 988,
+    "name": "Slither Wing",
+    "types": [
+      "bug",
+      "fighting"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 989,
+    "name": "Sandy Shocks",
+    "types": [
+      "electric",
+      "ground"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 990,
+    "name": "Iron Treads",
+    "types": [
+      "ground",
+      "steel"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 991,
+    "name": "Iron Bundle",
+    "types": [
+      "ice",
+      "water"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 992,
+    "name": "Iron Hands",
+    "types": [
+      "fighting",
+      "electric"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 993,
+    "name": "Iron Jugulis",
+    "types": [
+      "dark",
+      "flying"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 994,
+    "name": "Iron Moth",
+    "types": [
+      "fire",
+      "poison"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 995,
+    "name": "Iron Thorns",
+    "types": [
+      "rock",
+      "electric"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 996,
+    "name": "Frigibax",
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 997,
+    "name": "Arctibax",
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 998,
+    "name": "Baxcalibur",
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 999,
+    "name": "Gimmighoul",
+    "types": [
+      "ghost"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1000,
+    "name": "Gholdengo",
+    "types": [
+      "steel",
+      "ghost"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1001,
+    "name": "Wo-Chien",
+    "types": [
+      "dark",
+      "grass"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1002,
+    "name": "Chien-Pao",
+    "types": [
+      "dark",
+      "ice"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1003,
+    "name": "Ting-Lu",
+    "types": [
+      "dark",
+      "ground"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1004,
+    "name": "Chi-Yu",
+    "types": [
+      "dark",
+      "fire"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1005,
+    "name": "Roaring Moon",
+    "types": [
+      "dragon",
+      "dark"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1006,
+    "name": "Iron Valiant",
+    "types": [
+      "fairy",
+      "fighting"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1007,
+    "name": "Koraidon",
+    "types": [
+      "fighting",
+      "dragon"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1008,
+    "name": "Miraidon",
+    "types": [
+      "electric",
+      "dragon"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1009,
+    "name": "Walking Wake",
+    "types": [
+      "water",
+      "dragon"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1010,
+    "name": "Iron Leaves",
+    "types": [
+      "grass",
+      "psychic"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1011,
+    "name": "Dipplin",
+    "types": [
+      "grass",
+      "dragon"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1012,
+    "name": "Poltchageist",
+    "types": [
+      "grass",
+      "ghost"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1013,
+    "name": "Sinistcha",
+    "types": [
+      "grass",
+      "ghost"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1014,
+    "name": "Okidogi",
+    "types": [
+      "poison",
+      "fighting"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1015,
+    "name": "Munkidori",
+    "types": [
+      "poison",
+      "psychic"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1016,
+    "name": "Fezandipiti",
+    "types": [
+      "poison",
+      "fairy"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1017,
+    "name": "Ogerpon",
+    "types": [
+      "grass"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1018,
+    "name": "Archaludon",
+    "types": [
+      "steel",
+      "dragon"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1019,
+    "name": "Hydrapple",
+    "types": [
+      "grass",
+      "dragon"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1020,
+    "name": "Gouging Fire",
+    "types": [
+      "fire",
+      "dragon"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1021,
+    "name": "Raging Bolt",
+    "types": [
+      "electric",
+      "dragon"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1022,
+    "name": "Iron Boulder",
+    "types": [
+      "rock",
+      "psychic"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1023,
+    "name": "Iron Crown",
+    "types": [
+      "steel",
+      "psychic"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1024,
+    "name": "Terapagos",
+    "types": [
+      "normal"
+    ],
+    "generation": 9
+  },
+  {
+    "id": 1025,
+    "name": "Pecharunt",
+    "types": [
+      "poison",
+      "ghost"
+    ],
+    "generation": 9
+  }
+]
