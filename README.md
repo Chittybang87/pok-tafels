@@ -27,6 +27,6 @@ npm run dev
 ## Offline op tablet
 
 1. Open de live site **een keer met wifi** (sprites en app worden gecached).
-2. Op Android/Chrome: menu → **App installeren** / **Toevoegen aan startscherm**.
-3. Op iPad/Safari: Deel → **Zet op beginscherm**.
+2. Tik op **App installeren** op het startscherm (Android), of op iPhone/iPad: knop → Delen → **Zet op beginscherm**.
+3. Alternatief: browser-menu → App installeren / Toevoegen aan startscherm.
 4. Daarna werkt de app zonder verbinding; voortgang blijft in de browser bewaard.

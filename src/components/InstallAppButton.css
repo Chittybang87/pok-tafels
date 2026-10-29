@@ -1,0 +1,21 @@
+.install-app {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.btn--install {
+  background: var(--grass);
+  color: #fff;
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--grass-deep) 80%, #000);
+}
+
+.install-app__tip {
+  margin: 0;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
+  background: var(--panel);
+  border-radius: 14px;
+  border: 2px solid color-mix(in srgb, var(--ink) 10%, transparent);
+}

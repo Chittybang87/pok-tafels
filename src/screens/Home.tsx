@@ -1,4 +1,5 @@
 import { HpBar } from '../components/HpBar'
+import { InstallAppButton } from '../components/InstallAppButton'
 import { PokemonSprite } from '../components/PokemonSprite'
 import { TypeBadges } from '../components/TypeBadges'
 import { useGame } from '../context/GameContext'
@@ -81,6 +82,7 @@ export function Home() {
         >
           Instellingen
         </button>
+        <InstallAppButton />
       </nav>
     </div>
   )
