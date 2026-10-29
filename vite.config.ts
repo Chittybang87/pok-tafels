@@ -2,8 +2,12 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// GitHub Pages project site lives under /pok-tafels/
+const base = process.env.GITHUB_PAGES === 'true' ? '/pok-tafels/' : '/'
+
 // https://vite.dev/config/
 export default defineConfig({
+  base,
   plugins: [
     react(),
     VitePWA({
@@ -18,7 +22,8 @@ export default defineConfig({
         display: 'standalone',
         orientation: 'any',
         lang: 'nl',
-        start_url: '/',
+        start_url: base,
+        scope: base,
         icons: [
           {
             src: 'pwa-192.png',

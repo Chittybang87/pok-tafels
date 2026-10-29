@@ -19,9 +19,14 @@ npm run dev
 - Pokédex met Gen 1 (151)
 - Offline / tablet: PWA — eenmaal online openen (of installeren), daarna speelbaar zonder internet
 
+## Live / installeren
+
+- Vercel: https://poketafels.vercel.app
+- GitHub Pages: https://chittybang87.github.io/pok-tafels/ (bij elke push naar `main`)
+
 ## Offline op tablet
 
-1. Open de site **een keer met wifi** (sprites en app worden gecached).
+1. Open de live site **een keer met wifi** (sprites en app worden gecached).
 2. Op Android/Chrome: menu → **App installeren** / **Toevoegen aan startscherm**.
 3. Op iPad/Safari: Deel → **Zet op beginscherm**.
 4. Daarna werkt de app zonder verbinding; voortgang blijft in de browser bewaard.
