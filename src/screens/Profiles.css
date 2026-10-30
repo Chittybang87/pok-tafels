@@ -1,0 +1,73 @@
+.profiles {
+  min-height: 100dvh;
+  padding: 1.5rem 1.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.profiles__hero {
+  text-align: center;
+}
+
+.profiles__hero h1 {
+  margin: 0.25rem 0 0.35rem;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+.profiles__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.profiles__player {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  min-height: 72px;
+  padding: 0.85rem 1.1rem;
+  border-radius: 16px;
+  border: 3px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  background: var(--panel);
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.profiles__player:hover,
+.profiles__player:focus-visible {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-2) 25%, transparent);
+  outline: none;
+}
+
+.profiles__player-name {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.profiles__player-meta {
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.profiles__nav {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: auto;
+}
+
+.profiles__hint {
+  margin: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}

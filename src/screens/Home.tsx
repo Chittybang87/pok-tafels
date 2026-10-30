@@ -9,7 +9,8 @@ import { getActivePartner } from '../lib/storage'
 import './Home.css'
 
 export function Home() {
-  const { setScreen, startBattle, progress } = useGame()
+  const { setScreen, startBattle, progress, activeProfile, switchPlayer } =
+    useGame()
   const partner = getActivePartner(progress)
   const species = partner ? getPokemon(partner.pokemonId) : null
   const canBattle = progress.party.some((p) => p.hp > 0)
@@ -23,6 +24,12 @@ export function Home() {
         <p className="brand">Pokétafels</p>
         <h1>Klaar om te oefenen?</h1>
         <p className="lede">
+          {activeProfile ? (
+            <>
+              Speler: <strong>{activeProfile.name}</strong>
+              {' · '}
+            </>
+          ) : null}
           Gevangen: {progress.caughtIds.length}/151 · Wild: {routeLabel}
         </p>
       </header>
@@ -74,6 +81,9 @@ export function Home() {
         </button>
         <button type="button" className="btn" onClick={() => setScreen('stats')}>
           Statistieken
+        </button>
+        <button type="button" className="btn" onClick={switchPlayer}>
+          Verwissel speler
         </button>
         <button
           type="button"

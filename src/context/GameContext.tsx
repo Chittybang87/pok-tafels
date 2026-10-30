@@ -11,18 +11,24 @@ import { warmSpriteCache } from '../lib/pokemon'
 import { applyAnswer, defaultPracticeStats } from '../lib/stats'
 import {
   createPartyMember,
+  createProfile as createProfileInStore,
   defaultProgress,
-  loadProgress,
+  deleteProfile as deleteProfileInStore,
+  loadProfiles,
   loadSettings,
-  resetAll,
-  saveProgress,
+  renameProfile as renameProfileInStore,
+  resetProfileProgress,
+  saveProfiles,
   saveSettings,
+  updateProfileProgress,
 } from '../lib/storage'
 import type {
   Generation,
   MathMode,
   MathQuestion,
   PartyMember,
+  Profile,
+  ProfilesState,
   Progress,
   Screen,
   Settings,
@@ -36,7 +42,15 @@ interface GameContextValue {
   battleKey: number
   startBattle: () => void
   settings: Settings
+  profiles: Profile[]
+  activeProfileId: string | null
+  activeProfile: Profile | null
   progress: Progress
+  selectProfile: (id: string) => void
+  switchPlayer: () => void
+  createProfile: (name: string) => boolean
+  deleteProfile: (id: string) => void
+  renameProfile: (id: string, name: string) => boolean
   toggleTable: (table: number) => void
   toggleGeneration: (generation: Generation) => void
   setMathMode: (mode: MathMode) => void
@@ -59,42 +73,107 @@ interface GameContextValue {
   /** Evolueer een partij-Pokémon naar intoId */
   evolveMember: (instanceId: string, intoId: number) => void
   clearPracticeStats: () => void
+  /** Reset alleen het actieve profiel */
   resetGame: () => void
 }
 
 const GameContext = createContext<GameContextValue | null>(null)
 
 export function GameProvider({ children }: { children: ReactNode }) {
-  const [screen, setScreen] = useState<Screen>(() =>
-    loadProgress().starterChosen ? 'home' : 'starter',
-  )
+  const [screen, setScreen] = useState<Screen>('profiles')
   const [battleKey, setBattleKey] = useState(0)
   const [settings, setSettings] = useState<Settings>(() => loadSettings())
-  const [progress, setProgress] = useState<Progress>(() => loadProgress())
+  const [profilesState, setProfilesState] = useState<ProfilesState>(() =>
+    loadProfiles(),
+  )
+  const [activeProfileId, setActiveProfileId] = useState<string | null>(null)
+
+  const profiles = profilesState.profiles
+  const activeProfile =
+    profiles.find((p) => p.id === activeProfileId) ?? null
+  const progress = activeProfile?.progress ?? defaultProgress()
 
   useEffect(() => {
     void warmSpriteCache(settings.activeGenerations)
   }, [settings.activeGenerations])
 
-  const startBattle = useCallback(() => {
-    setBattleKey((k) => k + 1)
-    setScreen('battle')
+  const persistProfiles = useCallback((next: ProfilesState) => {
+    setProfilesState(next)
+    saveProfiles(next)
   }, [])
 
   const persistProgress = useCallback(
     (next: Progress | ((prev: Progress) => Progress)) => {
-      setProgress((prev) => {
-        const resolved = typeof next === 'function' ? next(prev) : next
-        saveProgress(resolved)
-        return resolved
+      setProfilesState((prev) => {
+        const id = activeProfileId
+        if (!id) return prev
+        const current = prev.profiles.find((p) => p.id === id)
+        if (!current) return prev
+        const resolved =
+          typeof next === 'function' ? next(current.progress) : next
+        const updated = updateProfileProgress(prev, id, resolved)
+        saveProfiles(updated)
+        return updated
       })
     },
-    [],
+    [activeProfileId],
   )
 
   const persistSettings = useCallback((next: Settings) => {
     setSettings(next)
     saveSettings(next)
+  }, [])
+
+  const selectProfile = useCallback(
+    (id: string) => {
+      const profile = profilesState.profiles.find((p) => p.id === id)
+      if (!profile) return
+      setActiveProfileId(id)
+      setScreen(profile.progress.starterChosen ? 'home' : 'starter')
+    },
+    [profilesState.profiles],
+  )
+
+  const switchPlayer = useCallback(() => {
+    setActiveProfileId(null)
+    setScreen('profiles')
+  }, [])
+
+  const createProfile = useCallback(
+    (name: string) => {
+      const result = createProfileInStore(profilesState, name)
+      if (!result) return false
+      persistProfiles(result.state)
+      return true
+    },
+    [profilesState, persistProfiles],
+  )
+
+  const deleteProfile = useCallback(
+    (id: string) => {
+      const next = deleteProfileInStore(profilesState, id)
+      persistProfiles(next)
+      if (activeProfileId === id) {
+        setActiveProfileId(null)
+        setScreen('profiles')
+      }
+    },
+    [profilesState, persistProfiles, activeProfileId],
+  )
+
+  const renameProfile = useCallback(
+    (id: string, name: string) => {
+      const next = renameProfileInStore(profilesState, id, name)
+      if (!next) return false
+      persistProfiles(next)
+      return true
+    },
+    [profilesState, persistProfiles],
+  )
+
+  const startBattle = useCallback(() => {
+    setBattleKey((k) => k + 1)
+    setScreen('battle')
   }, [])
 
   const toggleTable = useCallback(
@@ -148,7 +227,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       let activeGenerations: Generation[]
       if (has) {
         if (settings.activeGenerations.length <= 1) return
-        activeGenerations = settings.activeGenerations.filter((g) => g !== generation)
+        activeGenerations = settings.activeGenerations.filter(
+          (g) => g !== generation,
+        )
       } else {
         activeGenerations = [...settings.activeGenerations, generation].sort(
           (a, b) => a - b,
@@ -161,18 +242,19 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const chooseStarter = useCallback(
     (pokemonId: number) => {
+      if (!activeProfileId) return
       const member = createPartyMember(pokemonId)
-      persistProgress({
-        ...progress,
+      persistProgress((prev) => ({
+        ...prev,
         starterChosen: true,
         party: [member],
         activePartnerInstanceId: member.instanceId,
         caughtIds: [pokemonId],
         seenIds: [pokemonId],
-      })
+      }))
       setScreen('home')
     },
-    [progress, persistProgress],
+    [activeProfileId, persistProgress],
   )
 
   const setActivePartner = useCallback(
@@ -293,11 +375,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }, [persistProgress])
 
   const resetGame = useCallback(() => {
-    resetAll()
-    setSettings(loadSettings())
-    setProgress(defaultProgress())
+    if (!activeProfileId) return
+    const next = resetProfileProgress(profilesState, activeProfileId)
+    persistProfiles(next)
     setScreen('starter')
-  }, [])
+  }, [activeProfileId, profilesState, persistProfiles])
 
   const value = useMemo(
     () => ({
@@ -306,7 +388,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
       battleKey,
       startBattle,
       settings,
+      profiles,
+      activeProfileId,
+      activeProfile,
       progress,
+      selectProfile,
+      switchPlayer,
+      createProfile,
+      deleteProfile,
+      renameProfile,
       toggleTable,
       toggleGeneration,
       setMathMode,
@@ -329,7 +419,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
       battleKey,
       startBattle,
       settings,
+      profiles,
+      activeProfileId,
+      activeProfile,
       progress,
+      selectProfile,
+      switchPlayer,
+      createProfile,
+      deleteProfile,
+      renameProfile,
       toggleTable,
       toggleGeneration,
       setMathMode,

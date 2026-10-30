@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useGame } from '../context/GameContext'
-import { ALL_TABLES, GENERATIONS, SUM_MAX_OPTIONS } from '../lib/types'
+import { ALL_TABLES, GENERATIONS, MAX_PROFILES, SUM_MAX_OPTIONS } from '../lib/types'
 import './Settings.css'
 
 const SETTINGS_PASSWORD = 'admin'
@@ -9,6 +9,11 @@ export function Settings() {
   const {
     setScreen,
     settings,
+    profiles,
+    activeProfile,
+    createProfile,
+    deleteProfile,
+    renameProfile,
     toggleTable,
     toggleGeneration,
     setMathMode,
@@ -21,8 +26,17 @@ export function Settings() {
   const [unlocked, setUnlocked] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
+  const [newName, setNewName] = useState('')
+  const [createError, setCreateError] = useState<string | null>(null)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editName, setEditName] = useState('')
 
   const sums = settings.mathMode === 'sums'
+  const backScreen = activeProfile?.progress.starterChosen
+    ? 'home'
+    : activeProfile
+      ? 'starter'
+      : 'profiles'
 
   function handleUnlock(e: FormEvent) {
     e.preventDefault()
@@ -35,6 +49,41 @@ export function Settings() {
     setError(true)
   }
 
+  function handleCreate(e: FormEvent) {
+    e.preventDefault()
+    setCreateError(null)
+    const trimmed = newName.trim()
+    if (!trimmed) {
+      setCreateError('Vul een naam in.')
+      return
+    }
+    if (profiles.length >= MAX_PROFILES) {
+      setCreateError(`Maximaal ${MAX_PROFILES} spelers.`)
+      return
+    }
+    if (!createProfile(trimmed)) {
+      setCreateError('Die naam bestaat al of is ongeldig.')
+      return
+    }
+    setNewName('')
+  }
+
+  function startRename(id: string, current: string) {
+    setEditingId(id)
+    setEditName(current)
+  }
+
+  function submitRename(e: FormEvent) {
+    e.preventDefault()
+    if (!editingId) return
+    if (!renameProfile(editingId, editName)) {
+      window.alert('Die naam bestaat al of is ongeldig.')
+      return
+    }
+    setEditingId(null)
+    setEditName('')
+  }
+
   if (!unlocked) {
     return (
       <div className="screen settings">
@@ -42,7 +91,7 @@ export function Settings() {
           <button
             type="button"
             className="btn btn--ghost btn--sm"
-            onClick={() => setScreen('home')}
+            onClick={() => setScreen(backScreen)}
           >
             ← Terug
           </button>
@@ -84,12 +133,122 @@ export function Settings() {
   return (
     <div className="screen settings">
       <header className="settings__head">
-        <button type="button" className="btn btn--ghost btn--sm" onClick={() => setScreen('home')}>
+        <button
+          type="button"
+          className="btn btn--ghost btn--sm"
+          onClick={() => setScreen(backScreen)}
+        >
           ← Terug
         </button>
         <h1>Instellingen</h1>
-        <p className="lede">Kies wat je wilt oefenen in gevechten en bij herstellen.</p>
+        <p className="lede">Beheer spelers en kies wat er geoefend wordt.</p>
       </header>
+
+      <section className="settings__section" aria-labelledby="players-heading">
+        <h2 id="players-heading" className="settings__section-title">
+          Spelers
+        </h2>
+        <p className="settings__hint settings__hint--tight">
+          Elke speler heeft een eigen team, Pokédex en statistieken. Max.{' '}
+          {MAX_PROFILES}.
+        </p>
+
+        {profiles.length === 0 ? (
+          <p className="settings__hint">Nog geen spelers aangemaakt.</p>
+        ) : (
+          <ul className="settings__players">
+            {profiles.map((p) => (
+              <li key={p.id} className="settings__player">
+                {editingId === p.id ? (
+                  <form className="settings__rename" onSubmit={submitRename}>
+                    <input
+                      className="settings__lock-input"
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      aria-label="Nieuwe naam"
+                      autoFocus
+                      maxLength={24}
+                    />
+                    <button type="submit" className="btn btn--primary btn--sm">
+                      Opslaan
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn--ghost btn--sm"
+                      onClick={() => setEditingId(null)}
+                    >
+                      Annuleren
+                    </button>
+                  </form>
+                ) : (
+                  <>
+                    <div className="settings__player-info">
+                      <span className="settings__player-name">{p.name}</span>
+                      {activeProfile?.id === p.id ? (
+                        <span className="settings__player-badge">actief</span>
+                      ) : null}
+                    </div>
+                    <div className="settings__player-actions">
+                      <button
+                        type="button"
+                        className="btn btn--ghost btn--sm"
+                        onClick={() => startRename(p.id, p.name)}
+                      >
+                        Hernoemen
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn--danger btn--sm"
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              `Speler “${p.name}” verwijderen? Voortgang wordt definitief gewist.`,
+                            )
+                          ) {
+                            deleteProfile(p.id)
+                          }
+                        }}
+                      >
+                        Verwijderen
+                      </button>
+                    </div>
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {profiles.length < MAX_PROFILES ? (
+          <form className="settings__add-player" onSubmit={handleCreate}>
+            <label className="settings__lock-label" htmlFor="new-player-name">
+              Nieuwe speler
+            </label>
+            <div className="settings__add-row">
+              <input
+                id="new-player-name"
+                className="settings__lock-input"
+                value={newName}
+                onChange={(e) => {
+                  setNewName(e.target.value)
+                  if (createError) setCreateError(null)
+                }}
+                placeholder="Naam"
+                maxLength={24}
+                autoComplete="off"
+              />
+              <button type="submit" className="btn btn--primary">
+                Toevoegen
+              </button>
+            </div>
+            {createError ? (
+              <p className="settings__lock-error" role="alert">
+                {createError}
+              </p>
+            ) : null}
+          </form>
+        ) : null}
+      </section>
 
       <section className="settings__section" aria-labelledby="gens-heading">
         <h2 id="gens-heading" className="settings__section-title">
@@ -224,21 +383,27 @@ export function Settings() {
         </section>
       )}
 
-      <button
-        type="button"
-        className="btn btn--danger"
-        onClick={() => {
-          if (
-            window.confirm(
-              'Weet je zeker dat je alle voortgang wilt wissen? Je begint opnieuw met een starter.',
-            )
-          ) {
-            resetGame()
-          }
-        }}
-      >
-        Alles wissen
-      </button>
+      {activeProfile ? (
+        <button
+          type="button"
+          className="btn btn--danger"
+          onClick={() => {
+            if (
+              window.confirm(
+                `Alles wissen voor “${activeProfile.name}”? Team, Pokédex en statistieken gaan verloren. Andere spelers blijven bewaard.`,
+              )
+            ) {
+              resetGame()
+            }
+          }}
+        >
+          Alles wissen ({activeProfile.name})
+        </button>
+      ) : (
+        <p className="settings__hint">
+          Kies eerst een speler om diens voortgang te wissen.
+        </p>
+      )}
     </div>
   )
 }

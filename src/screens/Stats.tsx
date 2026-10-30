@@ -9,7 +9,7 @@ import {
 import './Stats.css'
 
 export function Stats() {
-  const { setScreen, progress, clearPracticeStats } = useGame()
+  const { setScreen, progress, clearPracticeStats, activeProfile } = useGame()
   const stats = progress.practiceStats
   const todayKey = localDateKey()
   const today = stats.days.find((d) => d.date === todayKey)
@@ -17,6 +17,7 @@ export function Stats() {
   const overallPct = accuracyPct(stats.totalCorrect, stats.totalWrong)
   const weak = useMemo(() => weakFacts(stats, 10), [stats])
   const recentDays = stats.days.slice(0, 14)
+  const playerLabel = activeProfile?.name
 
   return (
     <div className="screen stats">
@@ -26,7 +27,14 @@ export function Stats() {
         </button>
         <h1>Statistieken</h1>
         <p className="lede">
-          Zo zie je wanneer je oefende en waar je extra op moet inzetten.
+          {playerLabel ? (
+            <>
+              Voor <strong>{playerLabel}</strong> — wanneer je oefende en waar je
+              extra op moet inzetten.
+            </>
+          ) : (
+            <>Zo zie je wanneer je oefende en waar je extra op moet inzetten.</>
+          )}
         </p>
       </header>
 
@@ -120,9 +128,10 @@ export function Stats() {
           type="button"
           className="btn btn--danger"
           onClick={() => {
+            const who = playerLabel ? ` van “${playerLabel}”` : ''
             if (
               window.confirm(
-                'Statistieken wissen? Je voortgang (Pokémon, team) blijft bewaard.',
+                `Statistieken${who} wissen? Pokémon en team blijven bewaard.`,
               )
             ) {
               clearPracticeStats()

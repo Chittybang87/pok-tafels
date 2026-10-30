@@ -1,4 +1,5 @@
 export type Screen =
+  | 'profiles'
   | 'starter'
   | 'home'
   | 'settings'
@@ -7,6 +8,9 @@ export type Screen =
   | 'heal'
   | 'party'
   | 'pokedex'
+
+/** Maximaal aantal spelers op één apparaat */
+export const MAX_PROFILES = 20
 
 /** Per som (bijv. "7 × 8") */
 export interface FactStat {
@@ -90,6 +94,18 @@ export interface Progress {
   correctAnswers: number
   /** Oefenhistorie en fouten per som */
   practiceStats: PracticeStats
+}
+
+/** Speler met eigen voortgang (team, Pokédex, stats) */
+export interface Profile {
+  id: string
+  name: string
+  createdAt: string
+  progress: Progress
+}
+
+export interface ProfilesState {
+  profiles: Profile[]
 }
 
 export interface MathQuestion {

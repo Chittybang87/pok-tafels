@@ -4,6 +4,7 @@ import { Heal } from './screens/Heal'
 import { Home } from './screens/Home'
 import { Party } from './screens/Party'
 import { Pokedex } from './screens/Pokedex'
+import { Profiles } from './screens/Profiles'
 import { Settings } from './screens/Settings'
 import { Starter } from './screens/Starter'
 import { Stats } from './screens/Stats'
@@ -12,6 +13,8 @@ function Router() {
   const { screen, battleKey } = useGame()
 
   switch (screen) {
+    case 'profiles':
+      return <Profiles />
     case 'starter':
       return <Starter />
     case 'settings':
