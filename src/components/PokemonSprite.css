@@ -6,7 +6,7 @@
   object-fit: contain;
   user-select: none;
   pointer-events: none;
-  flex-shrink: 1;
+  flex-shrink: 0;
 }
 
 .poke-sprite--sil {

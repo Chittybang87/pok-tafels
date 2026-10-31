@@ -47,7 +47,7 @@ export function Pokedex() {
                 <PokemonSprite
                   id={p.id}
                   name={p.name}
-                  size={64}
+                  size={56}
                   anim="none"
                   silhouette={!caught}
                 />
