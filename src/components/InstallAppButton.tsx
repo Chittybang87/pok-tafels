@@ -23,7 +23,7 @@ export function InstallAppButton() {
     null,
   )
   const [installed, setInstalled] = useState(false)
-  const [showIosTip, setShowIosTip] = useState(false)
+  const [showTip, setShowTip] = useState(false)
 
   useEffect(() => {
     if (isStandalone()) {
@@ -58,23 +58,29 @@ export function InstallAppButton() {
       setDeferred(null)
       return
     }
-    if (isIos()) {
-      setShowIosTip((v) => !v)
-    }
+    setShowTip((v) => !v)
   }
 
-  const canPrompt = Boolean(deferred)
   const ios = isIos()
-  if (!canPrompt && !ios) return null
 
   return (
     <div className="install-app">
       <button type="button" className="btn btn--install" onClick={handleInstall}>
         App installeren
       </button>
-      {showIosTip ? (
+      {showTip ? (
         <p className="install-app__tip" role="status">
-          Tik op Delen (□↑) en kies <strong>Zet op beginscherm</strong>.
+          {ios ? (
+            <>
+              Tik op Delen (□↑) en kies <strong>Zet op beginscherm</strong>.
+            </>
+          ) : deferred ? null : (
+            <>
+              Open het menu van je browser en kies{' '}
+              <strong>App installeren</strong> of{' '}
+              <strong>Toevoegen aan startscherm</strong>.
+            </>
+          )}
         </p>
       ) : null}
     </div>

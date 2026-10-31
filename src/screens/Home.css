@@ -2,6 +2,10 @@
   max-width: 480px;
   margin: 0 auto;
   --poke-max: clamp(64px, 14dvh, 120px);
+  /* Laat home intern scrollen als knoppen anders afgeknipt worden */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .home__hero {
@@ -44,7 +48,7 @@
   grid-template-columns: 1fr 1fr;
   gap: clamp(0.4rem, 1dvh, 0.65rem);
   margin-top: auto;
-  min-height: 0;
+  flex-shrink: 0;
   align-content: end;
 }
 
