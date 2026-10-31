@@ -1,8 +1,12 @@
 .poke-sprite {
+  --poke-cap: var(--poke-max, 9999px);
+  width: min(var(--poke-size, 128px), var(--poke-cap));
+  height: min(var(--poke-size, 128px), var(--poke-cap));
   image-rendering: pixelated;
   object-fit: contain;
   user-select: none;
   pointer-events: none;
+  flex-shrink: 1;
 }
 
 .poke-sprite--sil {

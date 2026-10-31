@@ -10,7 +10,7 @@
 }
 
 .hpbar__track {
-  height: 14px;
+  height: clamp(10px, 1.6dvh, 14px);
   background: color-mix(in srgb, var(--ink) 12%, transparent);
   border-radius: 999px;
   overflow: hidden;

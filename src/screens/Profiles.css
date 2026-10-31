@@ -1,20 +1,16 @@
 .profiles {
-  min-height: 100dvh;
-  padding: 1.5rem 1.25rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
   max-width: 480px;
   margin: 0 auto;
 }
 
 .profiles__hero {
   text-align: center;
+  flex-shrink: 0;
 }
 
 .profiles__hero h1 {
-  margin: 0.25rem 0 0.35rem;
-  font-size: clamp(1.5rem, 5vw, 2rem);
+  margin: 0.2rem 0 0.25rem;
+  font-size: clamp(1.25rem, 3.6dvh, 2rem);
 }
 
 .profiles__list {
@@ -22,7 +18,12 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0.65rem;
+  gap: 0.5rem;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  align-content: start;
 }
 
 .profiles__player {
@@ -30,9 +31,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.2rem;
-  min-height: 72px;
-  padding: 0.85rem 1.1rem;
+  gap: 0.15rem;
+  min-height: clamp(56px, 8dvh, 72px);
+  padding: 0.65rem 1rem;
   border-radius: 16px;
   border: 3px solid color-mix(in srgb, var(--ink) 12%, transparent);
   background: var(--panel);
@@ -50,7 +51,7 @@
 }
 
 .profiles__player-name {
-  font-size: 1.25rem;
+  font-size: clamp(1.05rem, 3dvh, 1.25rem);
   font-weight: 800;
 }
 
@@ -61,8 +62,9 @@
 
 .profiles__nav {
   display: grid;
-  gap: 0.65rem;
+  gap: 0.5rem;
   margin-top: auto;
+  flex-shrink: 0;
 }
 
 .profiles__hint {

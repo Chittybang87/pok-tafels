@@ -144,6 +144,7 @@ export function Settings() {
         <p className="lede">Beheer spelers en kies wat er geoefend wordt.</p>
       </header>
 
+      <div className="settings__body">
       <section className="settings__section" aria-labelledby="players-heading">
         <h2 id="players-heading" className="settings__section-title">
           Spelers
@@ -404,6 +405,7 @@ export function Settings() {
           Kies eerst een speler om diens voortgang te wissen.
         </p>
       )}
+      </div>
     </div>
   )
 }

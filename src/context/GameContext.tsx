@@ -72,6 +72,8 @@ interface GameContextValue {
   ) => void
   /** Evolueer een partij-Pokémon naar intoId */
   evolveMember: (instanceId: string, intoId: number) => void
+  /** Vervang een teamlid door een andere reeds gevangen soort */
+  replacePartyMember: (instanceId: string, pokemonId: number) => boolean
   clearPracticeStats: () => void
   /** Reset alleen het actieve profiel */
   resetGame: () => void
@@ -259,21 +261,27 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const setActivePartner = useCallback(
     (instanceId: string) => {
-      const member = progress.party.find((p) => p.instanceId === instanceId)
-      if (!member || member.hp <= 0) return
-      persistProgress({ ...progress, activePartnerInstanceId: instanceId })
+      persistProgress((prev) => {
+        const member = prev.party.find((p) => p.instanceId === instanceId)
+        if (!member || member.hp <= 0) return prev
+        return { ...prev, activePartnerInstanceId: instanceId }
+      })
     },
-    [progress, persistProgress],
+    [persistProgress],
   )
 
   const updatePartyMember = useCallback(
     (member: PartyMember) => {
-      const party = progress.party.map((p) =>
-        p.instanceId === member.instanceId ? member : p,
-      )
-      persistProgress({ ...progress, party })
+      // Functionele update: mag niet stale progress gebruiken — bij een fout
+      // antwoord roept Battle recordAnswer + persistPartnerHp kort na elkaar aan.
+      persistProgress((prev) => ({
+        ...prev,
+        party: prev.party.map((p) =>
+          p.instanceId === member.instanceId ? member : p,
+        ),
+      }))
     },
-    [progress, persistProgress],
+    [persistProgress],
   )
 
   const healMember = useCallback(
@@ -294,21 +302,23 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const already = progress.caughtIds.includes(pokemonId)
       const partyFull = progress.party.length >= MAX_PARTY_SIZE
       const addedToParty = !already && !partyFull
-      const party = addedToParty
-        ? [...progress.party, createPartyMember(pokemonId)]
-        : progress.party
-      const caughtIds = already
-        ? progress.caughtIds
-        : [...progress.caughtIds, pokemonId]
-      const seenIds = progress.seenIds.includes(pokemonId)
-        ? progress.seenIds
-        : [...progress.seenIds, pokemonId]
-      persistProgress({
-        ...progress,
-        party,
-        caughtIds,
-        seenIds,
-        battlesWon: progress.battlesWon + 1,
+      persistProgress((prev) => {
+        const wasCaught = prev.caughtIds.includes(pokemonId)
+        const full = prev.party.length >= MAX_PARTY_SIZE
+        const add = !wasCaught && !full
+        return {
+          ...prev,
+          party: add
+            ? [...prev.party, createPartyMember(pokemonId)]
+            : prev.party,
+          caughtIds: wasCaught
+            ? prev.caughtIds
+            : [...prev.caughtIds, pokemonId],
+          seenIds: prev.seenIds.includes(pokemonId)
+            ? prev.seenIds
+            : [...prev.seenIds, pokemonId],
+          battlesWon: prev.battlesWon + 1,
+        }
       })
       return addedToParty
     },
@@ -317,13 +327,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const markSeen = useCallback(
     (pokemonId: number) => {
-      if (progress.seenIds.includes(pokemonId)) return
-      persistProgress({
-        ...progress,
-        seenIds: [...progress.seenIds, pokemonId],
+      persistProgress((prev) => {
+        if (prev.seenIds.includes(pokemonId)) return prev
+        return {
+          ...prev,
+          seenIds: [...prev.seenIds, pokemonId],
+        }
       })
     },
-    [progress, persistProgress],
+    [persistProgress],
   )
 
   const recordAnswer = useCallback(
@@ -365,6 +377,37 @@ export function GameProvider({ children }: { children: ReactNode }) {
       })
     },
     [persistProgress],
+  )
+
+  const replacePartyMember = useCallback(
+    (instanceId: string, pokemonId: number) => {
+      const partyIds = new Set(progress.party.map((p) => p.pokemonId))
+      if (!progress.caughtIds.includes(pokemonId) || partyIds.has(pokemonId)) {
+        return false
+      }
+      if (!progress.party.some((p) => p.instanceId === instanceId)) {
+        return false
+      }
+      persistProgress((prev) => {
+        const idx = prev.party.findIndex((p) => p.instanceId === instanceId)
+        if (idx < 0) return prev
+        if (!prev.caughtIds.includes(pokemonId)) return prev
+        if (prev.party.some((p) => p.pokemonId === pokemonId)) return prev
+        const next = createPartyMember(pokemonId)
+        const party = [...prev.party]
+        party[idx] = next
+        const wasActive = prev.activePartnerInstanceId === instanceId
+        return {
+          ...prev,
+          party,
+          activePartnerInstanceId: wasActive
+            ? next.instanceId
+            : prev.activePartnerInstanceId,
+        }
+      })
+      return true
+    },
+    [progress, persistProgress],
   )
 
   const clearPracticeStats = useCallback(() => {
@@ -411,6 +454,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       markSeen,
       recordAnswer,
       evolveMember,
+      replacePartyMember,
       clearPracticeStats,
       resetGame,
     }),
@@ -442,6 +486,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       markSeen,
       recordAnswer,
       evolveMember,
+      replacePartyMember,
       clearPracticeStats,
       resetGame,
     ],

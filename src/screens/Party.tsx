@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { EvolutionAnimation } from '../components/EvolutionAnimation'
 import { HpBar } from '../components/HpBar'
 import { PokemonSprite } from '../components/PokemonSprite'
@@ -14,8 +14,14 @@ import { MAX_PARTY_SIZE } from '../lib/types'
 import './Party.css'
 
 export function Party() {
-  const { setScreen, progress, settings, setActivePartner, evolveMember } =
-    useGame()
+  const {
+    setScreen,
+    progress,
+    settings,
+    setActivePartner,
+    evolveMember,
+    replacePartyMember,
+  } = useGame()
   const emptySlots = Math.max(0, MAX_PARTY_SIZE - progress.party.length)
   const gens = settings.activeGenerations
 
@@ -29,6 +35,24 @@ export function Party() {
     fromId: number
     options: number[]
   } | null>(null)
+  const [swapFor, setSwapFor] = useState<{
+    instanceId: string
+    pokemonId: number
+  } | null>(null)
+
+  const partyIds = useMemo(
+    () => new Set(progress.party.map((m) => m.pokemonId)),
+    [progress.party],
+  )
+
+  const boxOptions = useMemo(
+    () =>
+      progress.caughtIds
+        .filter((id) => !partyIds.has(id))
+        .slice()
+        .sort((a, b) => a - b),
+    [progress.caughtIds, partyIds],
+  )
 
   const startEvolve = (instanceId: string, fromId: number) => {
     const options = evolvesToIds(fromId, gens)
@@ -46,6 +70,12 @@ export function Party() {
     setEvolving(null)
   }, [evolving, evolveMember])
 
+  const confirmSwap = (pokemonId: number) => {
+    if (!swapFor) return
+    replacePartyMember(swapFor.instanceId, pokemonId)
+    setSwapFor(null)
+  }
+
   return (
     <div className="screen party">
       <header className="party__head">
@@ -55,8 +85,8 @@ export function Party() {
         <h1>Mijn team</h1>
         <p className="lede">
           {progress.party.length}/{MAX_PARTY_SIZE} Pokémon. Tik om je favoriet te
-          kiezen. Na {EVOLVE_CORRECT_NEEDED} goede antwoorden kan een Pokémon
-          evolueren.
+          kiezen. Wissel een plek met een andere gevangen Pokémon. Na{' '}
+          {EVOLVE_CORRECT_NEEDED} goede antwoorden kan een Pokémon evolueren.
         </p>
       </header>
 
@@ -71,6 +101,7 @@ export function Party() {
           const progressLabel = canEvolveSpecies(m.pokemonId, gens)
             ? `${Math.min(m.correctCount, EVOLVE_CORRECT_NEEDED)}/${EVOLVE_CORRECT_NEEDED} tot evolutie`
             : null
+          const canSwap = boxOptions.length > 0
 
           return (
             <li key={m.instanceId}>
@@ -98,15 +129,30 @@ export function Party() {
                     )}
                   </div>
                 </button>
-                {ready && (
+                <div className="party__actions">
                   <button
                     type="button"
-                    className="btn btn--primary party__evolve-btn"
-                    onClick={() => startEvolve(m.instanceId, m.pokemonId)}
+                    className="btn btn--ghost btn--sm party__swap-btn"
+                    disabled={!canSwap}
+                    onClick={() =>
+                      setSwapFor({
+                        instanceId: m.instanceId,
+                        pokemonId: m.pokemonId,
+                      })
+                    }
                   >
-                    Evolueer!
+                    Wissel
                   </button>
-                )}
+                  {ready && (
+                    <button
+                      type="button"
+                      className="btn btn--primary party__evolve-btn"
+                      onClick={() => startEvolve(m.instanceId, m.pokemonId)}
+                    >
+                      Evolueer!
+                    </button>
+                  )}
+                </div>
               </div>
             </li>
           )
@@ -117,6 +163,50 @@ export function Party() {
           </li>
         ))}
       </ul>
+
+      {swapFor && (
+        <div className="party__pick" role="dialog" aria-label="Wissel Pokémon">
+          <div className="party__pick-card">
+            <h2>Wissel {getPokemon(swapFor.pokemonId).name}</h2>
+            <p className="lede">
+              Kies een andere gevangen Pokémon voor deze plek in je team.
+            </p>
+            {boxOptions.length === 0 ? (
+              <p className="lede">Je hebt geen andere gevangen Pokémon klaar.</p>
+            ) : (
+              <ul className="party__pick-list">
+                {boxOptions.map((id) => {
+                  const opt = getPokemon(id)
+                  return (
+                    <li key={id}>
+                      <button
+                        type="button"
+                        className="party__pick-option"
+                        onClick={() => confirmSwap(id)}
+                      >
+                        <PokemonSprite
+                          id={opt.id}
+                          name={opt.name}
+                          size={64}
+                          anim="none"
+                        />
+                        <strong>{opt.name}</strong>
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+            <button
+              type="button"
+              className="btn btn--ghost"
+              onClick={() => setSwapFor(null)}
+            >
+              Annuleren
+            </button>
+          </div>
+        </div>
+      )}
 
       {pickFor && (
         <div className="party__pick" role="dialog" aria-label="Kies evolutie">

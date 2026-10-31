@@ -1,16 +1,17 @@
 .keypad {
   display: grid;
-  gap: 0.75rem;
+  gap: clamp(0.35rem, 1dvh, 0.75rem);
   width: 100%;
   max-width: 320px;
   margin-inline: auto;
+  flex-shrink: 0;
 }
 
 .keypad__display {
-  min-height: 3rem;
+  min-height: clamp(2.2rem, 5dvh, 3rem);
   display: grid;
   place-items: center;
-  font-size: 2rem;
+  font-size: clamp(1.4rem, 4dvh, 2rem);
   font-weight: 800;
   letter-spacing: 0.06em;
   background: var(--panel);
@@ -22,12 +23,12 @@
 .keypad__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.55rem;
+  gap: clamp(0.3rem, 0.9dvh, 0.55rem);
 }
 
 .keypad__btn {
-  min-height: 52px;
-  font-size: 1.35rem;
+  min-height: var(--key-h);
+  font-size: clamp(1.05rem, 3.2dvh, 1.35rem);
   font-weight: 800;
   font-family: inherit;
   border: none;
@@ -56,5 +57,5 @@
 }
 
 .keypad__btn--muted {
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 2.2dvh, 1rem);
 }

@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { spriteUrl } from '../lib/pokemon'
 import './PokemonSprite.css'
 
@@ -26,7 +27,7 @@ export function PokemonSprite({
       height={size}
       className={`poke-sprite poke-sprite--${anim} ${silhouette ? 'poke-sprite--sil' : ''} ${className}`}
       draggable={false}
-      style={{ width: size, height: size }}
+      style={{ ['--poke-size' as string]: `${size}px` } as CSSProperties}
     />
   )
 }

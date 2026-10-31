@@ -36,7 +36,8 @@
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 180px;
+  min-height: clamp(120px, 22dvh, 180px);
+  --poke-max: clamp(96px, 20dvh, 160px);
 }
 
 .evo--charge .evo__sprite {
