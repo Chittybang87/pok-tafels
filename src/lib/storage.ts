@@ -1,3 +1,11 @@
+import {
+  bootstrapBadgeAttemptsFromEarned,
+  bootstrapTableSeriesFromStats,
+  mergeSeriesCorrect,
+  normalizeBadgeAttempts,
+  normalizeEarnedBadges,
+  normalizeSeriesCorrect,
+} from './badges'
 import { defaultPracticeStats, normalizePracticeStats } from './stats'
 import type {
   Generation,
@@ -52,6 +60,9 @@ export const defaultProgress = (): Progress => ({
   battlesWon: 0,
   correctAnswers: 0,
   practiceStats: defaultPracticeStats(),
+  seriesCorrect: {},
+  earnedBadges: [],
+  badgeAttempts: [],
 })
 
 export function loadSettings(): Settings {
@@ -137,6 +148,15 @@ function normalizeProgress(raw: unknown): Progress {
     parsed.battlesWon >= 0
       ? Math.floor(parsed.battlesWon)
       : 0
+  const storedSeries = normalizeSeriesCorrect(parsed.seriesCorrect)
+  const bootstrapped = bootstrapTableSeriesFromStats(merged.practiceStats)
+  merged.seriesCorrect = mergeSeriesCorrect(storedSeries, bootstrapped)
+  merged.earnedBadges = normalizeEarnedBadges(parsed.earnedBadges)
+  const storedAttempts = normalizeBadgeAttempts(parsed.badgeAttempts)
+  merged.badgeAttempts =
+    storedAttempts.length > 0
+      ? storedAttempts
+      : bootstrapBadgeAttemptsFromEarned(merged.earnedBadges)
   return merged
 }
 

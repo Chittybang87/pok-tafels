@@ -1,0 +1,185 @@
+.badges {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.badges__head {
+  flex-shrink: 0;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.badges__head h1 {
+  margin: 0;
+  font-size: clamp(1.35rem, 3.8dvh, 2rem);
+}
+
+.badges__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  display: grid;
+  gap: 1.1rem;
+  padding-bottom: 0.5rem;
+}
+
+.badges__section {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.badges__section-title {
+  margin: 0;
+  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-size: 1.1rem;
+}
+
+.badges__hint {
+  margin: 0;
+}
+
+.badges__settings-hint {
+  margin: 0.15rem 0 0;
+  font-size: 0.85rem;
+}
+
+.badges__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.badges__card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.7rem;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--panel) 92%, #ffe7a8),
+      var(--panel)
+    );
+  border-radius: 16px;
+  border: 2px solid color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.badges__card-text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.badges__card-text strong {
+  font-size: 0.95rem;
+}
+
+.badges__card-meta {
+  font-size: 0.8rem;
+  opacity: 0.75;
+  font-weight: 600;
+}
+
+.badges__card-meta--ok {
+  color: var(--accent-2);
+  opacity: 1;
+}
+
+.badges__bar {
+  height: 0.4rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+  overflow: hidden;
+  margin-top: 0.15rem;
+}
+
+.badges__bar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+.badges__tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.badges__tab {
+  appearance: none;
+  border: 2px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  background: color-mix(in srgb, var(--panel) 80%, transparent);
+  border-radius: 12px;
+  min-height: var(--btn-h);
+  font: inherit;
+  font-weight: 800;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.badges__tab--on {
+  background: color-mix(in srgb, var(--accent) 22%, var(--panel));
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.badges__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.badges__chip {
+  appearance: none;
+  border: 2px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  background: var(--panel);
+  border-radius: 999px;
+  min-width: 2.6rem;
+  min-height: 2.4rem;
+  padding: 0.25rem 0.7rem;
+  font: inherit;
+  font-weight: 800;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.badges__chip--on {
+  background: color-mix(in srgb, var(--accent-2) 28%, var(--panel));
+  border-color: color-mix(in srgb, var(--accent-2) 55%, transparent);
+}
+
+.badges__chip--locked {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.badges__preview {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 16px;
+  background:
+    radial-gradient(
+      ellipse at 20% 0%,
+      color-mix(in srgb, #ffe08a 70%, transparent),
+      transparent 55%
+    ),
+    var(--panel);
+  border: 2px solid color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.badges__preview .lede {
+  margin-top: 0.2rem;
+}
+
+.badges__warn {
+  margin: 0;
+  color: var(--hp-low);
+  font-weight: 700;
+}

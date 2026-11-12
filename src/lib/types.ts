@@ -8,6 +8,8 @@ export type Screen =
   | 'heal'
   | 'party'
   | 'pokedex'
+  | 'badges'
+  | 'badgeBattle'
 
 /** Maximaal aantal spelers op één apparaat */
 export const MAX_PROFILES = 20
@@ -68,6 +70,37 @@ export type MathMode = 'tables' | 'sums'
 /** Bovengrens voor plus/min-getallen */
 export type SumMax = 5 | 10 | 20 | 50 | 100
 
+/** Badge voor één tafel, een tafelcombo, of plus/min-moeilijkheid */
+export type BadgeId =
+  | `table:${number}`
+  | `tables:${string}`
+  | `sums:${SumMax}`
+
+export interface BadgeEarn {
+  id: BadgeId
+  earnedAt: string
+  score: number
+}
+
+/** Één badge-uitdagingpoging (geslaagd of niet) */
+export interface BadgeAttempt {
+  id: BadgeId
+  /** ISO-tijdstempel */
+  at: string
+  /** Aantal juiste antwoorden */
+  score: number
+  /** Aantal sommen in die run (meestal 30; minder bij afbreken) */
+  total: number
+  passed: boolean
+  /** Team was uitgeput vóór het einde */
+  aborted?: boolean
+}
+
+/** Selectie voor een badge-uitdaging */
+export type BadgeChallengeSelection =
+  | { mode: 'tables'; tables: number[] }
+  | { mode: 'sums'; sumMax: SumMax }
+
 export interface Settings {
   /** Tafels 0 t/m 10 die actief zijn */
   activeTables: number[]
@@ -90,10 +123,16 @@ export interface Progress {
   caughtIds: number[]
   seenIds: number[]
   battlesWon: number
-  /** Goed beantwoorde sommen (gevecht + herstellen) */
+  /** Goed beantwoorde sommen (gevecht + herstellen + badge) */
   correctAnswers: number
   /** Oefenhistorie en fouten per som */
   practiceStats: PracticeStats
+  /** Juiste antwoorden per unlock-reeks (`table:7`, `sums:20`) */
+  seriesCorrect: Record<string, number>
+  /** Verdiende badges */
+  earnedBadges: BadgeEarn[]
+  /** Geschiedenis van badge-uitdagingen (nieuwste eerst) */
+  badgeAttempts: BadgeAttempt[]
 }
 
 /** Speler met eigen voortgang (team, Pokédex, stats) */

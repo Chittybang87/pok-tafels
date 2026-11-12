@@ -93,3 +93,25 @@ export function nextQuestion(settings: Settings): MathQuestion {
     settings.includeDivision,
   )
 }
+
+export interface ChallengeQuestionOpts {
+  mode: 'tables' | 'sums'
+  tables?: number[]
+  sumMax?: SumMax
+  includeMultiply?: boolean
+  includeDivision?: boolean
+}
+
+/** Genereert een som voor een badge-uitdaging (eigen selectie). */
+export function nextQuestionForChallenge(
+  opts: ChallengeQuestionOpts,
+): MathQuestion {
+  if (opts.mode === 'sums') {
+    return nextSumsQuestion(opts.sumMax ?? 10)
+  }
+  return nextTablesQuestion(
+    opts.tables && opts.tables.length > 0 ? opts.tables : [1, 2, 5, 10],
+    opts.includeMultiply ?? true,
+    opts.includeDivision ?? false,
+  )
+}

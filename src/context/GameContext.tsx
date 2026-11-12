@@ -7,6 +7,15 @@ import {
   useState,
   type ReactNode,
 } from 'react'
+import {
+  applySeriesCorrectBump,
+  BADGE_PASS_SCORE,
+  BADGE_QUESTION_COUNT,
+  badgeIdForSelection,
+  canStartBadgeChallenge,
+  prependBadgeAttempt,
+  seriesKeysForCorrectAnswer,
+} from '../lib/badges'
 import { warmSpriteCache } from '../lib/pokemon'
 import { applyAnswer, defaultPracticeStats } from '../lib/stats'
 import {
@@ -23,6 +32,8 @@ import {
   updateProfileProgress,
 } from '../lib/storage'
 import type {
+  BadgeChallengeSelection,
+  BadgeId,
   Generation,
   MathMode,
   MathQuestion,
@@ -36,11 +47,26 @@ import type {
 } from '../lib/types'
 import { MAX_PARTY_SIZE } from '../lib/types'
 
+interface RecordAnswerOpts {
+  /** Bij plus/min: welke moeilijkheid telt voor series-unlock */
+  sumMax?: SumMax
+}
+
 interface GameContextValue {
   screen: Screen
   setScreen: (s: Screen) => void
   battleKey: number
   startBattle: () => void
+  badgeKey: number
+  badgeChallenge: BadgeChallengeSelection | null
+  startBadgeChallenge: (selection: BadgeChallengeSelection) => boolean
+  /** Registreert badge-poging (en verdient badge bij voldoende score) */
+  recordBadgeAttempt: (opts: {
+    id: BadgeId
+    score: number
+    total?: number
+    aborted?: boolean
+  }) => void
   settings: Settings
   profiles: Profile[]
   activeProfileId: string | null
@@ -69,6 +95,7 @@ interface GameContextValue {
     question: MathQuestion,
     correct: boolean,
     partyInstanceId?: string,
+    opts?: RecordAnswerOpts,
   ) => void
   /** Evolueer een partij-Pokémon naar intoId */
   evolveMember: (instanceId: string, intoId: number) => void
@@ -84,6 +111,9 @@ const GameContext = createContext<GameContextValue | null>(null)
 export function GameProvider({ children }: { children: ReactNode }) {
   const [screen, setScreen] = useState<Screen>('profiles')
   const [battleKey, setBattleKey] = useState(0)
+  const [badgeKey, setBadgeKey] = useState(0)
+  const [badgeChallenge, setBadgeChallenge] =
+    useState<BadgeChallengeSelection | null>(null)
   const [settings, setSettings] = useState<Settings>(() => loadSettings())
   const [profilesState, setProfilesState] = useState<ProfilesState>(() =>
     loadProfiles(),
@@ -177,6 +207,65 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setBattleKey((k) => k + 1)
     setScreen('battle')
   }, [])
+
+  const startBadgeChallenge = useCallback(
+    (selection: BadgeChallengeSelection) => {
+      if (!canStartBadgeChallenge(progress, selection)) return false
+      if (selection.mode === 'tables' && selection.tables.length === 0) {
+        return false
+      }
+      const normalized: BadgeChallengeSelection =
+        selection.mode === 'tables'
+          ? {
+              mode: 'tables',
+              tables: [...new Set(selection.tables)].sort((a, b) => a - b),
+            }
+          : selection
+      // Valideer dat badge-id parsebaar is
+      badgeIdForSelection(normalized)
+      setBadgeChallenge(normalized)
+      setBadgeKey((k) => k + 1)
+      setScreen('badgeBattle')
+      return true
+    },
+    [progress],
+  )
+
+  const recordBadgeAttempt = useCallback(
+    (opts: {
+      id: BadgeId
+      score: number
+      total?: number
+      aborted?: boolean
+    }) => {
+      const total = opts.total ?? BADGE_QUESTION_COUNT
+      const score = Math.max(0, Math.min(Math.floor(opts.score), total))
+      const passed = !opts.aborted && score >= BADGE_PASS_SCORE
+      const at = new Date().toISOString()
+      persistProgress((prev) => ({
+        ...prev,
+        badgeAttempts: prependBadgeAttempt(prev.badgeAttempts, {
+          id: opts.id,
+          at,
+          score,
+          total,
+          passed,
+          aborted: opts.aborted ? true : undefined,
+        }),
+        earnedBadges: passed
+          ? [
+              ...prev.earnedBadges,
+              {
+                id: opts.id,
+                earnedAt: at,
+                score,
+              },
+            ]
+          : prev.earnedBadges,
+      }))
+    },
+    [persistProgress],
+  )
 
   const toggleTable = useCallback(
     (table: number) => {
@@ -339,22 +428,38 @@ export function GameProvider({ children }: { children: ReactNode }) {
   )
 
   const recordAnswer = useCallback(
-    (question: MathQuestion, correct: boolean, partyInstanceId?: string) => {
-      persistProgress((prev) => ({
-        ...prev,
-        correctAnswers: correct ? prev.correctAnswers + 1 : prev.correctAnswers,
-        practiceStats: applyAnswer(prev.practiceStats, question, correct),
-        party:
-          correct && partyInstanceId
-            ? prev.party.map((p) =>
-                p.instanceId === partyInstanceId
-                  ? { ...p, correctCount: p.correctCount + 1 }
-                  : p,
-              )
-            : prev.party,
-      }))
+    (
+      question: MathQuestion,
+      correct: boolean,
+      partyInstanceId?: string,
+      opts?: RecordAnswerOpts,
+    ) => {
+      const sumMaxForSeries = opts?.sumMax ?? settings.sumMax
+      persistProgress((prev) => {
+        const seriesKeys = correct
+          ? seriesKeysForCorrectAnswer(question, sumMaxForSeries)
+          : []
+        return {
+          ...prev,
+          correctAnswers: correct
+            ? prev.correctAnswers + 1
+            : prev.correctAnswers,
+          practiceStats: applyAnswer(prev.practiceStats, question, correct),
+          seriesCorrect: correct
+            ? applySeriesCorrectBump(prev.seriesCorrect, seriesKeys)
+            : prev.seriesCorrect,
+          party:
+            correct && partyInstanceId
+              ? prev.party.map((p) =>
+                  p.instanceId === partyInstanceId
+                    ? { ...p, correctCount: p.correctCount + 1 }
+                    : p,
+                )
+              : prev.party,
+        }
+      })
     },
-    [persistProgress],
+    [persistProgress, settings.sumMax],
   )
 
   const evolveMember = useCallback(
@@ -414,6 +519,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     persistProgress((prev) => ({
       ...prev,
       practiceStats: defaultPracticeStats(),
+      badgeAttempts: [],
     }))
   }, [persistProgress])
 
@@ -430,6 +536,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
       setScreen,
       battleKey,
       startBattle,
+      badgeKey,
+      badgeChallenge,
+      startBadgeChallenge,
+      recordBadgeAttempt,
       settings,
       profiles,
       activeProfileId,
@@ -462,6 +572,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
       screen,
       battleKey,
       startBattle,
+      badgeKey,
+      badgeChallenge,
+      startBadgeChallenge,
+      recordBadgeAttempt,
       settings,
       profiles,
       activeProfileId,

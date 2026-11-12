@@ -14,7 +14,6 @@ export function Home() {
   const partner = getActivePartner(progress)
   const species = partner ? getPokemon(partner.pokemonId) : null
   const canBattle = progress.party.some((p) => p.hp > 0)
-  const needsHeal = progress.party.some((p) => p.hp < p.maxHp)
   const tier = encounterTier(progress.correctAnswers)
   const routeLabel = encounterTierLabel(tier)
 
@@ -42,7 +41,9 @@ export function Home() {
             <TypeBadges types={species.types} size="sm" />
             <HpBar hp={partner.hp} maxHp={partner.maxHp} />
             {!canBattle ? (
-              <p className="home__warn">Eerst herstellen voor een gevecht!</p>
+              <p className="home__warn">
+                Eerst herstellen via Mijn team voor een gevecht!
+              </p>
             ) : partner.hp <= 0 ? (
               <p className="home__warn">
                 Uitgeput — in het gevecht kies je een volgende.
@@ -63,11 +64,11 @@ export function Home() {
         </button>
         <button
           type="button"
-          className="btn"
-          disabled={!needsHeal}
-          onClick={() => setScreen('heal')}
+          className="btn home__nav-wide"
+          disabled={!canBattle}
+          onClick={() => setScreen('badges')}
         >
-          Herstellen
+          Gym gevecht
         </button>
         <button type="button" className="btn" onClick={() => setScreen('party')}>
           Mijn team

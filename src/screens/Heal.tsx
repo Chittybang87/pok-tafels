@@ -68,7 +68,7 @@ export function Heal() {
           <button type="button" className="btn btn--primary" onClick={() => setTarget(null)}>
             Ander herstellen
           </button>
-          <button type="button" className="btn" onClick={() => setScreen('home')}>
+          <button type="button" className="btn" onClick={() => setScreen('party')}>
             Klaar
           </button>
         </div>
@@ -80,7 +80,7 @@ export function Heal() {
     return (
       <div className="screen heal">
         <header className="heal__head">
-          <button type="button" className="btn btn--ghost btn--sm" onClick={() => setScreen('home')}>
+          <button type="button" className="btn btn--ghost btn--sm" onClick={() => setScreen('party')}>
             ← Terug
           </button>
           <h1>Herstellen</h1>
@@ -123,7 +123,7 @@ export function Heal() {
   return (
     <div className="screen heal heal--session">
       <header className="heal__session-head">
-        <button type="button" className="btn btn--ghost btn--sm" onClick={() => setScreen('home')}>
+        <button type="button" className="btn btn--ghost btn--sm" onClick={() => setScreen('party')}>
           Klaar
         </button>
         <div className="heal__focus">

@@ -54,6 +54,7 @@
 
 .home__nav > .btn--primary,
 .home__nav > .btn--ghost,
+.home__nav > .home__nav-wide,
 .home__nav > .install-app {
   grid-column: 1 / -1;
 }

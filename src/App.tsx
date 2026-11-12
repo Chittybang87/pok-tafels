@@ -1,4 +1,6 @@
 import { GameProvider, useGame } from './context/GameContext'
+import { BadgeBattle } from './screens/BadgeBattle'
+import { Badges } from './screens/Badges'
 import { Battle } from './screens/Battle'
 import { Heal } from './screens/Heal'
 import { Home } from './screens/Home'
@@ -10,7 +12,7 @@ import { Starter } from './screens/Starter'
 import { Stats } from './screens/Stats'
 
 function Router() {
-  const { screen, battleKey } = useGame()
+  const { screen, battleKey, badgeKey } = useGame()
 
   switch (screen) {
     case 'profiles':
@@ -27,6 +29,10 @@ function Router() {
       return <Pokedex />
     case 'heal':
       return <Heal />
+    case 'badges':
+      return <Badges />
+    case 'badgeBattle':
+      return <BadgeBattle key={badgeKey} />
     case 'battle':
       return <Battle key={battleKey} />
     case 'home':

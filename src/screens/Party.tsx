@@ -76,6 +76,8 @@ export function Party() {
     setSwapFor(null)
   }
 
+  const needsHeal = progress.party.some((p) => p.hp < p.maxHp)
+
   return (
     <div className="screen party">
       <header className="party__head">
@@ -88,6 +90,14 @@ export function Party() {
           kiezen. Wissel een plek met een andere gevangen Pokémon. Na{' '}
           {EVOLVE_CORRECT_NEEDED} goede antwoorden kan een Pokémon evolueren.
         </p>
+        <button
+          type="button"
+          className="btn btn--primary party__heal-btn"
+          disabled={!needsHeal}
+          onClick={() => setScreen('heal')}
+        >
+          Herstellen
+        </button>
       </header>
 
       <ul className="party__list">

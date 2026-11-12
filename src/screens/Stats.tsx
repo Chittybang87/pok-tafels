@@ -1,6 +1,12 @@
 import { useMemo } from 'react'
 import { useGame } from '../context/GameContext'
 import {
+  BADGE_QUESTION_COUNT,
+  badgeVisual,
+  formatBadgeAttemptWhen,
+  summarizeBadgeAttempts,
+} from '../lib/badges'
+import {
   accuracyPct,
   formatPracticeDate,
   localDateKey,
@@ -17,7 +23,14 @@ export function Stats() {
   const overallPct = accuracyPct(stats.totalCorrect, stats.totalWrong)
   const weak = useMemo(() => weakFacts(stats, 10), [stats])
   const recentDays = stats.days.slice(0, 14)
+  const badgeAttempts = progress.badgeAttempts
+  const badgeSummary = useMemo(
+    () => summarizeBadgeAttempts(badgeAttempts),
+    [badgeAttempts],
+  )
+  const recentBadgeAttempts = badgeAttempts.slice(0, 12)
   const playerLabel = activeProfile?.name
+  const hasAnyStats = total > 0 || badgeAttempts.length > 0
 
   return (
     <div className="screen stats">
@@ -124,7 +137,62 @@ export function Stats() {
           )}
         </section>
 
-        {total > 0 && (
+        <section className="stats__section" aria-labelledby="badges-heading">
+          <h2 id="badges-heading" className="stats__section-title">
+            Badge-uitdagingen
+          </h2>
+          {badgeSummary.attempts === 0 ? (
+            <p className="stats__empty">Nog geen badge-uitdagingen gedaan.</p>
+          ) : (
+            <>
+              <div className="stats__overview">
+                <div className="stats__metric">
+                  <span className="stats__metric-value">
+                    {badgeSummary.attempts}
+                  </span>
+                  <span className="stats__metric-label">pogingen</span>
+                </div>
+                <div className="stats__metric">
+                  <span className="stats__metric-value">
+                    {badgeSummary.passed}
+                  </span>
+                  <span className="stats__metric-label">gehaald</span>
+                </div>
+                <div className="stats__metric">
+                  <span className="stats__metric-value">
+                    {badgeSummary.bestScore ?? 0}/{BADGE_QUESTION_COUNT}
+                  </span>
+                  <span className="stats__metric-label">beste</span>
+                </div>
+              </div>
+              <ul className="stats__days">
+                {recentBadgeAttempts.map((a) => {
+                  const visual = badgeVisual(a.id)
+                  return (
+                    <li
+                      key={`${a.id}-${a.at}`}
+                      className={`stats__day${
+                        a.passed ? ' stats__day--today' : ''
+                      }`}
+                    >
+                      <span className="stats__day-date">{visual.label}</span>
+                      <span className="stats__day-meta">
+                        {formatBadgeAttemptWhen(a.at)} · {a.score}/{a.total}
+                        {a.passed
+                          ? ' · gehaald'
+                          : a.aborted
+                            ? ' · team uitgeput'
+                            : ' · niet gehaald'}
+                      </span>
+                    </li>
+                  )
+                })}
+              </ul>
+            </>
+          )}
+        </section>
+
+        {hasAnyStats && (
           <button
             type="button"
             className="btn btn--danger"
@@ -132,7 +200,7 @@ export function Stats() {
               const who = playerLabel ? ` van “${playerLabel}”` : ''
               if (
                 window.confirm(
-                  `Statistieken${who} wissen? Pokémon en team blijven bewaard.`,
+                  `Statistieken${who} wissen? Badge-resultaten ook. Verdiende badges, Pokémon en team blijven bewaard.`,
                 )
               ) {
                 clearPracticeStats()
