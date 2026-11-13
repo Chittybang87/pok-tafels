@@ -60,13 +60,13 @@ export function Heal() {
     return (
       <div className="screen heal">
         <header>
-          <h1>Helemaal fris!</h1>
-          <p className="lede">{getPokemon(current.pokemonId).name} is weer op volle HP.</p>
+          <h1>Helemaal hersteld!</h1>
+          <p className="lede">{getPokemon(current.pokemonId).name} is weer op volle kracht.</p>
         </header>
         <PokemonSprite id={current.pokemonId} size={140} />
         <div className="heal__actions">
           <button type="button" className="btn btn--primary" onClick={() => setTarget(null)}>
-            Ander herstellen
+            Andere herstellen
           </button>
           <button type="button" className="btn" onClick={() => setScreen('party')}>
             Klaar
